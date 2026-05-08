@@ -1,0 +1,3682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JIN Properties — Luxury Student Rentals in Windsor, Ontario</title>
+
+  <!-- ============================================================
+       FONTS — swap these Google Font links to change typography
+       ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES — edit these to retheme the entire site
+       ============================================================ */
+    :root {
+      --color-bg:         #f5f1e8;       /* warm cream/ivory — Aman / Soho House */
+      --color-surface:    #ffffff;       /* clean white for elevated cards/sections */
+      --color-border:     #e6dfcf;       /* soft warm cream border */
+      --color-text:       #1a1814;       /* deep warm charcoal (not pure black) */
+      --color-muted:      #6b6660;       /* mid warm grey */
+      --color-accent:     #b8924a;       /* deeper gold for legibility on cream */
+      --color-accent-dim: #8a6d36;       /* darker gold */
+      --color-white:      #ffffff;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;   /* headings */
+      --font-body:    'Raleway', Helvetica, sans-serif;       /* body copy */
+
+      --nav-height: 72px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+      --max-width: 1440px;
+      --gutter: clamp(1.5rem, 5vw, 5rem);
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* ============================================================
+       UTILITY CLASSES
+       ============================================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .label {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+      background: transparent;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+    }
+    .btn:hover { background: var(--color-accent); color: #fff; }
+    .btn-solid  { background: var(--color-accent); color: #fff; }
+    .btn-solid:hover { background: var(--color-accent-dim); border-color: var(--color-accent-dim); }
+
+    /* arrow icon */
+    .btn .arrow { transition: transform var(--transition); }
+    .btn:hover .arrow { transform: translateX(4px); }
+
+    /* ============================================================
+       IMAGE PLACEHOLDER — replace src="" with your real image path
+       Usage: <div class="img-wrap"><img src="images/hero.jpg" alt="…"></div>
+       ============================================================ */
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--color-surface);
+    }
+    .img-wrap::after {
+      content: attr(data-label);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.02) 20px,
+        rgba(255,255,255,0.02) 40px
+      );
+      pointer-events: none;
+    }
+    /* Hide placeholder label when a real image is loaded */
+    .img-wrap img:not([src=""]):not([src*="placeholder"]) ~ * { display: none; }
+    .img-wrap img { transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+    .img-wrap:hover img { transform: scale(1.04); }
+
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--color-text);
+    }
+    /* ⬇ EDIT: Change "Windsor." to your brand name */
+    .nav-logo span { color: var(--color-accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--color-accent);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--color-text); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* dropdown */
+    .nav-item { position: relative; }
+    /* Invisible hover bridge so the gap between link and dropdown stays "hovered" */
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -2rem;
+      right: -2rem;
+      height: 1.7rem;
+    }
+    .nav-dropdown {
+      position: absolute;
+      top: calc(100% + 1.5rem);
+      left: -1.5rem;
+      min-width: 220px;
+      background: rgba(17,17,17,0.98);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--color-border);
+      padding: 1rem 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      /* Hide: 0.6s delay before fading so the user has grace time */
+      transition:
+        opacity 0.25s ease 0.6s,
+        transform 0.25s ease 0.6s;
+    }
+    .nav-item:hover .nav-dropdown {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      /* Show: no delay */
+      transition:
+        opacity 0.2s ease 0s,
+        transform 0.2s ease 0s;
+    }
+    /* Keep dropdown open when the user's cursor is on it directly */
+    .nav-dropdown:hover {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition:
+        opacity 0.2s ease 0s,
+        transform 0.2s ease 0s;
+    }
+    .nav-dropdown a {
+      display: block;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.72rem;
+      color: var(--color-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .nav-dropdown a:hover { color: var(--color-accent); background: rgba(201,169,110,0.06); }
+    .nav-dropdown a::after { display: none; }
+
+    .nav-cta {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav-cta:hover { background: var(--color-accent); color: #fff; }
+
+    /* Hamburger (mobile) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1px;
+      background: var(--color-text);
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: var(--color-bg);
+      padding: calc(var(--nav-height) + 2rem) var(--gutter) 2rem;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 1rem;
+    }
+
+    /* ============================================================
+       HERO SECTION
+       ============================================================ */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: clamp(3rem, 6vw, 6rem);
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       IMAGE SLOT 1 — Hero background
+       Replace the src below with your hero image path
+       Recommended: wide landscape shot of your best property
+       ============================================================ */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+    }
+    .hero-bg img {
+      /* src="images/hero-background.jpg" */
+    }
+    .hero-bg .img-placeholder-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.85) 0%,
+        rgba(0,0,0,0.3) 50%,
+        rgba(0,0,0,0.1) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      max-width: 16ch;
+      margin-bottom: 2rem;
+    }
+    .hero-title em { font-style: italic; color: var(--color-accent); }
+
+    .hero-sub {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      max-width: 38ch;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .hero-stats {
+      position: absolute;
+      right: var(--gutter);
+      bottom: clamp(3rem, 6vw, 6rem);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: right;
+    }
+    .hero-stat-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--color-accent);
+    }
+    .hero-stat-lbl {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    /* ============================================================
+       COLLECTIONS OVERVIEW (3 tiles)
+       ============================================================ */
+    .collections {
+      padding: clamp(5rem, 10vw, 10rem) 0;
+    }
+
+    .collections-header {
+      max-width: var(--max-width);
+      margin: 0 auto var(--gutter);
+      padding: 0 var(--gutter);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--color-border);
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .collection-tile {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--color-surface);
+    }
+    .collection-tile:first-child { aspect-ratio: unset; grid-row: span 1; }
+
+    /* ============================================================
+       IMAGE SLOTS 2, 3, 4 — Collection tiles
+       Replace each src="" with your collection hero images
+       ============================================================ */
+    .collection-tile .tile-img {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    .collection-tile:hover .tile-img { transform: scale(1.06); }
+    .tile-img img { /* Replace src with: images/collection-walkerville.jpg */ }
+    .tile-img .img-placeholder-fill {
+      position: absolute; inset: 0;
+      background: var(--color-surface);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-muted); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+
+    .tile-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 55%);
+      transition: opacity var(--transition);
+    }
+    .collection-tile:hover .tile-overlay { opacity: 0.9; }
+
+    .tile-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem;
+      z-index: 2;
+    }
+    .tile-num {
+      font-size: 0.6rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+    .tile-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300; line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+    .tile-sub {
+      font-size: 0.72rem; color: var(--color-muted);
+      letter-spacing: 0.08em; margin-bottom: 1.2rem;
+    }
+    .tile-link {
+      font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--color-accent);
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: gap var(--transition);
+    }
+    .collection-tile:hover .tile-link { gap: 0.9rem; }
+
+    /* ============================================================
+       PROPERTIES LISTING SECTION
+       ============================================================ */
+    .properties {
+      padding: clamp(5rem, 10vw, 10rem) 0;
+      background: var(--color-surface);
+    }
+
+    .properties-header {
+      max-width: var(--max-width);
+      margin: 0 auto 4rem;
+      padding: 0 var(--gutter);
+    }
+
+    /* Tab filter */
+    .filter-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--color-border);
+      margin-top: 2rem;
+      overflow-x: auto;
+    }
+    .filter-tab {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color var(--transition), border-color var(--transition);
+      background: none; border-top: none; border-left: none; border-right: none;
+      font-family: var(--font-body);
+    }
+    .filter-tab.active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+    .filter-tab:hover { color: var(--color-text); }
+
+    /* Property cards grid */
+    .properties-grid {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .property-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: border-color var(--transition), transform var(--transition);
+      display: none; /* shown by JS filter */
+    }
+    .property-card.visible { display: flex; flex-direction: column; }
+    .property-card:hover { border-color: var(--color-accent-dim); transform: translateY(-4px); }
+
+    /* ============================================================
+       IMAGE SLOTS 5–16+ — Property card images
+       For each property card, replace src="" with your property photo
+       Recommended size: 800×600px landscape
+       ============================================================ */
+    .card-img {
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+      /* src="images/properties/property-name.jpg" */
+    }
+    .card-img .img-placeholder-fill {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a1a1a, #141414);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.5rem;
+      color: var(--color-muted); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .property-card:hover .card-img img { transform: scale(1.05); }
+
+    .card-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      background: var(--color-accent); color: #fff;
+      font-family: var(--font-body); font-weight: 600;
+    }
+    .card-badge.coming-soon { background: var(--color-muted); }
+
+    .card-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; }
+    .card-collection {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--color-accent); margin-bottom: 0.4rem;
+    }
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 400; margin-bottom: 0.3rem;
+    }
+    .card-address {
+      font-size: 0.75rem; color: var(--color-muted); margin-bottom: 1rem;
+    }
+    .card-meta {
+      display: flex; gap: 1.2rem; margin-top: auto;
+      border-top: 1px solid var(--color-border); padding-top: 1rem;
+    }
+    .card-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .card-meta-val { font-family: var(--font-display); font-size: 1rem; }
+    .card-meta-key { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-muted); }
+
+    /* ============================================================
+       UPCOMING PROJECT SECTION
+       ============================================================ */
+    .upcoming {
+      padding: clamp(5rem, 10vw, 9rem) 0;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .upcoming::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--color-accent) 50%, transparent);
+      opacity: 0.6;
+    }
+
+    .upcoming-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(2.5rem, 6vw, 5rem);
+      align-items: center;
+    }
+
+    .upcoming-visual {
+      position: relative;
+    }
+    .upcoming-img {
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 18px 40px rgba(40,30,15,0.10);
+    }
+    .upcoming-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    .upcoming-img:hover img { transform: scale(1.02); }
+
+    .upcoming-badge {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.2rem;
+      background: linear-gradient(135deg, var(--color-accent) 0%, #d4ad62 100%);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem;
+      z-index: 2;
+      box-shadow: 0 4px 14px rgba(184,146,74,0.35);
+    }
+
+    .upcoming-content {
+      max-width: 50ch;
+    }
+    .upcoming-content .section-title em {
+      color: var(--color-accent);
+      font-style: italic;
+    }
+    .upcoming-body {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--color-muted);
+      margin: 1.5rem 0 2rem;
+    }
+    .upcoming-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1024px) {
+      .upcoming-inner { grid-template-columns: 1fr; }
+      .upcoming-content { max-width: none; }
+    }
+
+    /* ============================================================
+       ABOUT SECTION
+       ============================================================ */
+    .about {
+      padding: clamp(6rem, 12vw, 12rem) 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    /* ============================================================
+       IMAGE SLOT — About section
+       Replace src with a portrait/brand image
+       Recommended: interior or exterior showcase shot
+       ============================================================ */
+    .about-img {
+      aspect-ratio: 4/5;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-img .img-placeholder-fill {
+      position: absolute; inset: 0;
+      background: var(--color-surface);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-muted); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+
+    .about-accent-box {
+      position: absolute;
+      bottom: -2rem; right: -2rem;
+      width: 220px;
+      padding: 2rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 12px 30px rgba(40,30,15,0.08);
+    }
+    .about-accent-num {
+      font-family: var(--font-display);
+      font-size: 3.5rem; font-weight: 300; color: var(--color-accent);
+      line-height: 1;
+    }
+    .about-accent-lbl {
+      font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--color-muted); margin-top: 0.4rem;
+    }
+
+    .about-content {
+      padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .about-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-style: italic;
+      color: var(--color-accent);
+      line-height: 1.5;
+      border-left: 2px solid var(--color-accent);
+      padding-left: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .about-body {
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: var(--color-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ============================================================
+       NEWS SECTION
+       ============================================================ */
+    .news {
+      padding: clamp(5rem, 10vw, 10rem) 0;
+      background: var(--color-surface);
+    }
+
+    .news-header {
+      max-width: var(--max-width);
+      margin: 0 auto 3.5rem;
+      padding: 0 var(--gutter);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .news-scroll-track {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      border-top: 1px solid var(--color-border);
+      padding-top: 1.5rem;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+    .news-card:hover { border-color: var(--color-accent); }
+
+    .news-source {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+    .news-source-badge {
+      width: 32px; height: 32px;
+      background: var(--color-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.55rem; letter-spacing: 0.1em;
+      text-transform: uppercase; font-weight: 600;
+    }
+    .news-source-name {
+      font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--color-muted);
+    }
+
+    .news-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem; font-weight: 400; line-height: 1.25;
+      margin-bottom: 0.6rem;
+    }
+
+    .news-excerpt { font-size: 0.8rem; color: var(--color-muted); line-height: 1.7; margin-bottom: 1rem; }
+    .news-date { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); }
+
+    /* ============================================================
+       CTA / CONTACT SECTION
+       ============================================================ */
+    .cta {
+      position: relative;
+      padding: clamp(6rem, 12vw, 14rem) 0;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       IMAGE SLOT — CTA background
+       Replace with a high-impact aerial or exterior shot
+       ============================================================ */
+    .cta-bg {
+      position: absolute; inset: 0;
+    }
+    .cta-bg .img-placeholder-fill {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #0f0f0f, #1a1508);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-muted); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .cta-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.7);
+    }
+
+    .cta-content {
+      position: relative; z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 300; line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .cta-title em { font-style: italic; color: var(--color-accent); }
+    .cta-sub { font-size: 0.85rem; color: var(--color-muted); margin-bottom: 2.5rem; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ============================================================
+       CONTACT FORM
+       ============================================================ */
+    .contact {
+      padding: clamp(5rem, 10vw, 10rem) 0;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 8vw, 8rem);
+    }
+
+    .contact-info h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300; margin-bottom: 1.5rem;
+    }
+    .contact-info p { font-size: 0.88rem; color: var(--color-muted); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-detail {
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .contact-detail-row {
+      display: flex; gap: 1rem; align-items: flex-start;
+      border-bottom: 1px solid var(--color-border); padding-bottom: 1rem;
+    }
+    .contact-detail-icon {
+      width: 36px; height: 36px; border: 1px solid var(--color-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--color-accent); flex-shrink: 0;
+    }
+    .contact-detail-text { font-size: 0.82rem; color: var(--color-muted); }
+    .contact-detail-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.2rem; }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-field label {
+      font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--color-muted);
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 0.9rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color var(--transition);
+      appearance: none;
+    }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus { border-color: var(--color-accent); }
+    .form-field textarea { resize: vertical; min-height: 120px; }
+    .form-field select option { background: var(--color-surface); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-brand .nav-logo { font-size: 1.8rem; display: block; margin-bottom: 1rem; }
+    .footer-brand p { font-size: 0.8rem; color: var(--color-muted); line-height: 1.75; max-width: 30ch; }
+
+    .footer-col-title {
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--color-accent); margin-bottom: 1.2rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-links a {
+      font-size: 0.8rem; color: var(--color-muted);
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--color-text); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--color-border);
+      padding-top: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy { font-size: 0.72rem; color: var(--color-muted); }
+    .footer-legal { display: flex; gap: 2rem; }
+    .footer-legal a { font-size: 0.7rem; color: var(--color-muted); transition: color var(--transition); }
+    .footer-legal a:hover { color: var(--color-text); }
+
+    /* ============================================================
+       SCROLL ANIMATIONS
+       ============================================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .collections-grid { grid-template-columns: 1fr 1fr; }
+      .collections-grid .collection-tile:nth-child(3) { display: none; }
+      .about { grid-template-columns: 1fr; max-width: 700px; }
+      .about-visual { display: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .collections-grid { grid-template-columns: 1fr; }
+      .collections-grid .collection-tile:nth-child(3) { display: block; }
+      .collection-tile { aspect-ratio: 4/3; }
+      .news-scroll-track { grid-template-columns: 1fr; }
+      .contact { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .hero-stats { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       PROPERTY DETAIL MODAL
+       ============================================================ */
+    .property-card { cursor: pointer; }
+
+    .property-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(6px);
+      display: none;
+      overflow-y: auto;
+    }
+    .property-modal.open { display: block; }
+
+    .modal-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 210;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--color-accent);
+      background: rgba(10,10,10,0.85);
+      color: var(--color-accent);
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+    }
+    .modal-close:hover { background: var(--color-accent); color: #fff; }
+
+    .modal-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem var(--gutter) 4rem;
+    }
+
+    .modal-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.8rem;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+    .modal-address {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+      margin-bottom: 1.8rem;
+    }
+
+    .modal-description {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--color-muted);
+      max-width: none;
+      margin-bottom: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+    .modal-description em {
+      color: var(--color-accent);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .modal-description.hidden { display: none; }
+
+    .modal-section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin: 3rem 0 1.2rem;
+      border-top: 1px solid var(--color-border);
+      padding-top: 1.5rem;
+    }
+
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .modal-gallery .gallery-item {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+    }
+    .modal-gallery .gallery-item:first-child {
+      grid-column: 1 / -1;
+      aspect-ratio: 16/9;
+    }
+    .modal-gallery img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .modal-gallery .gallery-item:hover img { transform: scale(1.04); }
+    .modal-caption {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      padding: 0.6rem 0.2rem 0;
+    }
+
+    .modal-map {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+    .modal-map iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .modal-map-caption {
+      font-size: 0.78rem;
+      color: var(--color-muted);
+      margin-top: 0.9rem;
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+    .modal-map-caption strong {
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+    .modal-map-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.6rem;
+    }
+    .modal-map-link {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--color-accent);
+      transition: background 0.2s, color 0.2s;
+    }
+    .modal-map-link:hover {
+      background: var(--color-accent);
+      color: var(--color-bg);
+    }
+
+    .modal-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .modal-units {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .unit-card {
+      border: 1px solid var(--color-border);
+      padding: 1.5rem;
+      background: var(--color-bg);
+      transition: border-color var(--transition);
+    }
+    .unit-card:hover { border-color: var(--color-accent-dim); }
+    .unit-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .unit-specs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .unit-specs li {
+      font-size: 0.82rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .unit-specs li::before {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--color-accent);
+      flex-shrink: 0;
+    }
+
+    /* Unit cards with attached photo galleries */
+    .unit-card.has-photos {
+      cursor: pointer;
+      position: relative;
+    }
+    .unit-card.has-photos::after {
+      content: 'View Photos ↓';
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-top: 1rem;
+      transition: opacity 0.2s;
+    }
+    .unit-card.has-photos.expanded::after { content: 'Hide Photos ↑'; }
+    .unit-card.has-photos:hover::after { opacity: 0.8; }
+
+    .unit-photo-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-border);
+    }
+    .unit-card.expanded .unit-photo-grid {
+      display: grid;
+      animation: unitPhotosIn 0.35s ease;
+    }
+    @keyframes unitPhotosIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .unit-photo-thumb {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--color-surface);
+      cursor: zoom-in;
+      border: 1px solid var(--color-border);
+      transition: border-color var(--transition);
+    }
+    .unit-photo-thumb:hover { border-color: var(--color-accent); }
+    .unit-photo-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: scale(1.18) translate(-4%, -4%);
+      transition: transform 0.4s;
+    }
+    .unit-photo-thumb:hover img {
+      transform: scale(1.25) translate(-4%, -4%);
+    }
+
+    .pricing-inquire {
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      padding: clamp(1.6rem, 3vw, 2.2rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-inquire::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(to bottom, var(--color-accent), transparent);
+    }
+    .pricing-inquire-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      font-weight: 400;
+      color: var(--color-text);
+      line-height: 1.4;
+      letter-spacing: -0.005em;
+    }
+    .pricing-inquire-title em {
+      color: var(--color-accent);
+      font-style: italic;
+    }
+    .pricing-inquire-sub {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      line-height: 1.65;
+      max-width: 60ch;
+      margin-top: 0.5rem;
+    }
+    .pricing-inquire-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .pricing-inquire-btn {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.95rem 1.7rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, filter 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--color-accent);
+    }
+    .pricing-inquire-btn.primary {
+      background: linear-gradient(135deg, var(--color-accent) 0%, #d4ad62 100%);
+      color: #fff;
+    }
+    .pricing-inquire-btn.primary:hover { filter: brightness(1.07); }
+    .pricing-inquire-btn.outline {
+      background: transparent;
+      color: var(--color-accent);
+    }
+    .pricing-inquire-btn.outline:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    .modal-pricing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .price-card {
+      border: 1px solid var(--color-border);
+      padding: 1.6rem 1.4rem;
+      background: var(--color-bg);
+      transition: border-color var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .price-card:hover { border-color: var(--color-accent-dim); }
+    .price-tier {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+    .price-size {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--color-text);
+    }
+    .price-amount {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--color-accent);
+      line-height: 1.1;
+      margin-top: 0.4rem;
+    }
+    .price-amount.empty {
+      color: var(--color-muted);
+      font-size: 1rem;
+      font-style: italic;
+    }
+    .price-period {
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .modal-feature {
+      border: 1px solid var(--color-border);
+      padding: 1.2rem;
+    }
+    .modal-feature-val {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--color-accent);
+      margin-bottom: 0.2rem;
+    }
+    .modal-feature-key {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    @media (max-width: 768px) {
+      .modal-gallery { grid-template-columns: 1fr; }
+      .modal-gallery .gallery-item:first-child { aspect-ratio: 4/3; }
+    }
+
+    body.modal-open { overflow: hidden; }
+
+    .modal-gallery .gallery-item { cursor: zoom-in; position: relative; }
+    .modal-gallery .gallery-item::after {
+      content: '⤢';
+      position: absolute;
+      top: 0.8rem; right: 0.8rem;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10,10,10,0.7);
+      color: var(--color-accent);
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+    }
+    .modal-gallery .gallery-item:hover::after { opacity: 1; }
+
+    /* ============================================================
+       LIGHTBOX — fullscreen photo viewer with prev/next
+       ============================================================ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0, 0, 0, 0.97);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-img-wrap {
+      max-width: 90vw;
+      max-height: 82vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-img-wrap img {
+      max-width: 90vw;
+      max-height: 82vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      animation: lightboxFade 0.25s ease;
+    }
+    @keyframes lightboxFade {
+      from { opacity: 0; transform: scale(0.98); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .lightbox-caption {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      text-align: center;
+    }
+    .lightbox-caption .lightbox-counter {
+      color: var(--color-accent);
+      margin-left: 0.8rem;
+    }
+
+    .lightbox-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--color-accent);
+      background: rgba(10,10,10,0.7);
+      color: var(--color-accent);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-btn:hover { background: var(--color-accent); color: var(--color-bg); }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+    .lightbox-close-btn {
+      top: 1.5rem;
+      right: 1.5rem;
+      transform: none;
+      width: 44px;
+      height: 44px;
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 600px) {
+      .lightbox-prev { left: 0.5rem; width: 44px; height: 44px; }
+      .lightbox-next { right: 0.5rem; width: 44px; height: 44px; }
+    }
+
+    /* ============================================================
+       WATERMARK CROP — push bottom-right corner out of view
+       on cover-fit images, clip it on the contained lightbox image
+       ============================================================ */
+    .hero-bg img,
+    .tile-img img,
+    .card-img img,
+    .about-img img,
+    .cta-bg img,
+    .modal-gallery .gallery-item img {
+      transform: scale(1.18) translate(-4%, -4%);
+      transform-origin: center center;
+    }
+    .property-card:hover .card-img img,
+    .modal-gallery .gallery-item:hover img {
+      transform: scale(1.22) translate(-4%, -4%);
+    }
+    #lightboxImg {
+      clip-path: inset(0 8% 6% 0);
+    }
+
+    /* ============================================================
+       PER-PROPERTY FRAMING — 709 and 721 are portrait photos that
+       need different focal points than the default landscape crop.
+       ============================================================ */
+    /* 709 — house sits in the upper portion of a portrait photo.
+       Shift the cover-crop focus upward and zoom in for prominence. */
+    .property-card[data-property="709"] .card-img img,
+    .gallery-item[data-property="709"][data-photo-idx="0"] img {
+      object-position: center 22%;
+      transform: scale(1.4) translate(-3%, -3%);
+    }
+    .property-card[data-property="709"]:hover .card-img img,
+    .gallery-item[data-property="709"][data-photo-idx="0"]:hover img {
+      transform: scale(1.46) translate(-3%, -3%);
+    }
+
+    /* 721 — house already fills a portrait photo; reduce zoom so it
+       has breathing room, while keeping the watermark out of view. */
+    .property-card[data-property="721"] .card-img img,
+    .gallery-item[data-property="721"][data-photo-idx="0"] img {
+      object-position: center 50%;
+      transform: scale(1.08) translate(-3%, -3%);
+    }
+    .property-card[data-property="721"]:hover .card-img img,
+    .gallery-item[data-property="721"][data-photo-idx="0"]:hover img {
+      transform: scale(1.12) translate(-3%, -3%);
+    }
+
+    /* 720 — architectural rendering: show all four elevations fully,
+       no watermark crop, no zoom-in distortion. */
+    .gallery-item[data-property="720"] img {
+      object-fit: contain !important;
+      transform: none !important;
+      background: var(--color-bg);
+    }
+    .gallery-item[data-property="720"]:hover img {
+      transform: none !important;
+    }
+
+    /* ============================================================
+       ATMOSPHERIC POLISH
+       Replaces flat black with warm radial gradients, gold glows,
+       gradient cards, and subtle motion. Layered for depth.
+       ============================================================ */
+
+    /* Body backdrop — soft warm tinting on cream */
+    body {
+      background:
+        radial-gradient(ellipse 70% 50% at 85% 0%,   rgba(184,146,74,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 15% 100%, rgba(184,146,74,0.04) 0%, transparent 60%),
+        var(--color-bg);
+      background-attachment: fixed;
+    }
+
+    /* Properties section — clean white for elevation against cream body */
+    .properties {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* Hero — strong dark gradient for legibility against the photo */
+    .hero-overlay {
+      background:
+        linear-gradient(to top,
+          rgba(0,0,0,0.92) 0%,
+          rgba(0,0,0,0.75) 25%,
+          rgba(0,0,0,0.45) 55%,
+          rgba(0,0,0,0.25) 100%);
+    }
+
+    /* Hero text — force white against the dark photo, gold em */
+    .hero-content,
+    .hero-title { color: #ffffff; }
+    .hero-title { text-shadow: 0 2px 28px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.6); }
+    .hero-title em {
+      color: #f0d49c;
+      text-shadow: 0 2px 28px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.6);
+    }
+    .hero-eyebrow { color: var(--color-accent); }
+    .hero-sub { color: rgba(255,255,255,0.88); text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+    .hero .btn {
+      color: #fff;
+      border-color: rgba(255,255,255,0.7);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .hero .btn:hover {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #fff;
+    }
+    .hero .btn-solid {
+      text-shadow: none;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--color-accent) 0%, #d4ad62 100%);
+      color: #fff;
+    }
+
+    /* ============================================================
+       INTRO SECTION (between hero and collections)
+       ============================================================ */
+    .intro {
+      padding: clamp(5rem, 10vw, 8rem) var(--gutter);
+      max-width: var(--max-width);
+      margin: 0 auto;
+      text-align: center;
+    }
+    .intro-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      font-weight: 600;
+      margin-bottom: 1.6rem;
+    }
+    .intro-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+      font-weight: 300;
+      line-height: 1.45;
+      color: var(--color-text);
+      max-width: 36ch;
+      margin: 0 auto;
+      letter-spacing: -0.005em;
+    }
+    .intro-text em {
+      color: var(--color-accent);
+      font-style: italic;
+    }
+    .intro-stats {
+      display: flex;
+      justify-content: center;
+      gap: clamp(2rem, 6vw, 5rem);
+      margin-top: clamp(3rem, 6vw, 4rem);
+      flex-wrap: wrap;
+    }
+    .intro-stat { text-align: center; }
+    .intro-stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+      font-weight: 300;
+      line-height: 1;
+      background-image: linear-gradient(135deg, var(--color-accent) 0%, #e6c896 100%);
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .intro-stat-lbl {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    @media (max-width: 600px) {
+      .intro-stats { gap: 1.5rem; }
+    }
+
+    /* CTA — flip to light theme so the page flows without a black wall */
+    .cta {
+      background:
+        radial-gradient(ellipse 60% 45% at 50% 50%, rgba(184,146,74,0.08) 0%, transparent 65%),
+        var(--color-bg);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .cta-bg,
+    .cta-overlay { display: none; }
+    .cta-title { color: var(--color-text); }
+    .cta-title em { color: var(--color-accent); }
+    .cta-sub { color: var(--color-muted); }
+    .cta .label { color: var(--color-accent); }
+
+    /* Footer — slight tint for separation on cream */
+    footer {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* Decorative gold vertical accent line at the top of key sections */
+    .collections, #contact { position: relative; }
+    .collections::before,
+    #contact::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--color-accent) 50%, transparent);
+      opacity: 0.6;
+    }
+
+    /* Animated gold gradient shimmer on small caps labels */
+    .label {
+      background-image: linear-gradient(
+        90deg,
+        var(--color-accent) 0%,
+        #e6c896 50%,
+        var(--color-accent) 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: labelShimmer 7s linear infinite;
+    }
+    @keyframes labelShimmer {
+      to { background-position: -200% 0; }
+    }
+
+    /* Hero stats and large gold numerals — gradient instead of flat */
+    .hero-stat-num,
+    .about-accent-num {
+      background-image: linear-gradient(135deg, var(--color-accent) 0%, #e6c896 100%);
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Property cards — clean white with soft shadow on hover */
+    .property-card {
+      background: var(--color-surface);
+    }
+    .property-card:hover {
+      box-shadow:
+        0 18px 40px rgba(40,30,15,0.10),
+        0 0 0 1px var(--color-accent-dim);
+    }
+
+    /* Collection tiles — warm gold sweep emerges on hover */
+    .collection-tile::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(135deg, transparent 50%, rgba(201,169,110,0) 100%);
+      transition: background 0.6s ease;
+    }
+    .collection-tile:hover::after {
+      background: linear-gradient(135deg, transparent 30%, rgba(201,169,110,0.18) 100%);
+    }
+
+    /* News cards lift slightly and gold-up on hover */
+    .news-card {
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .news-card:hover {
+      border-top-color: var(--color-accent);
+      transform: translateY(-3px);
+    }
+
+    /* Property detail modal — soft cream backdrop */
+    .property-modal {
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%,   rgba(184,146,74,0.05) 0%, transparent 65%),
+        rgba(245,241,232,0.98);
+    }
+
+    /* Inner modal cards: clean white with subtle border */
+    .modal-feature,
+    .unit-card,
+    .price-card {
+      background: var(--color-surface);
+    }
+
+    /* Form fields — soft cream with focused border */
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: var(--color-surface);
+    }
+
+    /* Solid gold buttons — gradient and white text */
+    .btn-solid {
+      background: linear-gradient(135deg, var(--color-accent) 0%, #d4ad62 100%);
+      color: #fff;
+    }
+    .btn-solid:hover {
+      background: linear-gradient(135deg, var(--color-accent-dim) 0%, var(--color-accent) 100%);
+      color: #fff;
+    }
+
+    /* Nav scrolled state — cream with subtle shadow */
+    nav.scrolled {
+      background: rgba(245,241,232,0.94);
+      box-shadow: 0 1px 0 var(--color-border), 0 4px 20px rgba(40,30,15,0.04);
+    }
+    /* Nav at top sits over the dark hero photo — force white text */
+    nav:not(.scrolled) .nav-logo,
+    nav:not(.scrolled) .nav-links a,
+    nav:not(.scrolled) .nav-cta {
+      color: #fff;
+    }
+    nav:not(.scrolled) .nav-logo span { color: var(--color-accent); }
+    nav:not(.scrolled) .nav-cta { border-color: rgba(255,255,255,0.6); }
+    nav:not(.scrolled) .hamburger span { background: #fff; }
+
+    /* ============================================================
+       AI PROPERTY CONCIERGE — chat bubble + window
+       ============================================================ */
+    .chat-bubble {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-accent) 0%, #d4b378 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 0 rgba(201,169,110,0.5);
+      z-index: 150;
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s;
+      animation: chatPulse 2s ease-out 0.5s 1;
+    }
+    @keyframes chatPulse {
+      0%   { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 0    rgba(201,169,110,0.6); }
+      70%  { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 18px rgba(201,169,110,0); }
+      100% { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 0    rgba(201,169,110,0); }
+    }
+    .chat-bubble.attention {
+      animation: chatPulse 1.2s ease-out 2;
+    }
+    .chat-bubble:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    }
+    .chat-bubble svg { width: 26px; height: 26px; color: #fff; }
+    .chat-bubble-badge {
+      position: absolute;
+      top: -2px; right: -2px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #e74c3c;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--color-bg);
+    }
+    .chat-bubble-badge.hidden { display: none; }
+
+    .chat-tip {
+      position: fixed;
+      bottom: 100px;
+      right: 28px;
+      background: #1a1a1a;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--color-accent);
+      max-width: 240px;
+      cursor: pointer;
+      z-index: 150;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+    }
+    .chat-tip.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .chat-tip::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 24px;
+      width: 10px; height: 10px;
+      background: #1a1a1a;
+      border-right: 1px solid var(--color-accent);
+      border-bottom: 1px solid var(--color-accent);
+      transform: rotate(45deg);
+    }
+
+    .chat-window {
+      position: fixed;
+      bottom: 100px;
+      right: 28px;
+      width: 380px;
+      height: 580px;
+      max-height: calc(100vh - 120px);
+      background: #FDFAF5;
+      border: 1px solid #E8E3DA;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(20px) scale(0.96);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+    }
+    .chat-window.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .chat-header {
+      height: 64px;
+      background: var(--color-bg);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      gap: 0.8rem;
+      flex-shrink: 0;
+    }
+    .chat-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-accent), #d4b378);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-bg);
+      flex-shrink: 0;
+    }
+    .chat-header-text { flex: 1; min-width: 0; }
+    .chat-header-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .chat-status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #34c46d;
+      box-shadow: 0 0 0 0 rgba(52,196,109,0.6);
+      animation: chatStatusPulse 2.5s ease-out infinite;
+    }
+    @keyframes chatStatusPulse {
+      0%   { box-shadow: 0 0 0 0    rgba(52,196,109,0.6); }
+      70%  { box-shadow: 0 0 0 8px  rgba(52,196,109,0); }
+      100% { box-shadow: 0 0 0 0    rgba(52,196,109,0); }
+    }
+    .chat-header-sub {
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .chat-header-btn {
+      width: 32px; height: 32px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: color 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-header-btn:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      background: #FDFAF5;
+    }
+    .chat-msg {
+      max-width: 80%;
+      padding: 0.7rem 0.95rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      font-family: var(--font-body);
+      animation: chatMsgIn 0.25s ease;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    @keyframes chatMsgIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .chat-msg.user {
+      align-self: flex-end;
+      background: var(--color-accent);
+      color: #fff;
+      border-radius: 16px 16px 4px 16px;
+    }
+    .chat-msg.assistant {
+      align-self: flex-start;
+      background: #fff;
+      color: #1a1a1a;
+      border-radius: 16px 16px 16px 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .chat-time {
+      font-size: 0.62rem;
+      color: #999;
+      letter-spacing: 0.05em;
+      margin: 0 0.4rem;
+    }
+    .chat-time.user  { align-self: flex-end; }
+    .chat-time.assistant { align-self: flex-start; }
+
+    .chat-typing {
+      align-self: flex-start;
+      background: #fff;
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.85rem 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .chat-typing span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      animation: chatBounce 1.2s ease-in-out infinite;
+    }
+    .chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes chatBounce {
+      0%, 60%, 100% { transform: translateY(0);   opacity: 0.4; }
+      30%           { transform: translateY(-5px); opacity: 1;   }
+    }
+
+    .chat-action-btn {
+      align-self: stretch;
+      margin-top: 0.4rem;
+      padding: 0 1rem;
+      height: 44px;
+      background: linear-gradient(135deg, var(--color-accent), #d4b378);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+    .chat-action-btn:hover { filter: brightness(1.05); }
+
+    .chat-suggestions {
+      padding: 0.6rem 1rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: #FDFAF5;
+    }
+    .chat-suggestion {
+      font-family: var(--font-body);
+      font-size: 0.74rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid var(--color-accent);
+      background: #fff;
+      color: var(--color-accent);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .chat-suggestion:hover { background: var(--color-accent); color: #fff; }
+    .chat-suggestions.hidden { display: none; }
+
+    .chat-input-bar {
+      border-top: 1px solid #E8E3DA;
+      background: #fff;
+      padding: 0.6rem 0.8rem env(safe-area-inset-bottom, 0.6rem);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .chat-input-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 0.7rem 0.4rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: #1a1a1a;
+    }
+    .chat-input-bar input::placeholder { color: #aaa; }
+    .chat-send {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: var(--color-accent);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .chat-send:disabled { background: #ccc; cursor: not-allowed; }
+    .chat-charcount {
+      position: absolute;
+      top: -18px;
+      right: 12px;
+      font-size: 0.65rem;
+      color: #999;
+      background: #FDFAF5;
+      padding: 0 4px;
+      display: none;
+    }
+    .chat-charcount.visible { display: block; }
+
+    @media (max-width: 768px) {
+      .chat-window {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100vw;
+        height: 100svh;
+        max-height: 100svh;
+        border-radius: 0;
+        border: none;
+      }
+      .chat-bubble { bottom: 20px; right: 20px; }
+      .chat-tip { right: 20px; bottom: 90px; }
+    }
+
+    /* Hide chat when other full-screen overlays are open */
+    body.modal-open .chat-bubble,
+    body.modal-open .chat-window,
+    body.modal-open .chat-tip { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       Edit: brand name, collection names, nav links
+       ============================================================ -->
+  <nav id="mainNav">
+    <div class="nav-inner">
+
+      <a href="#" class="nav-logo">JIN Properties<span>.</span></a>
+
+      <ul class="nav-links">
+
+        <li class="nav-item">
+          <a href="#properties">Properties ▾</a>
+          <div class="nav-dropdown">
+            <a href="#" onclick="event.preventDefault(); openProperty('653')">653 Bridge Avenue</a>
+            <a href="#" onclick="event.preventDefault(); openProperty('709')">709 Bridge Avenue</a>
+            <a href="#" onclick="event.preventDefault(); openProperty('721')">721 Partington Avenue</a>
+          </div>
+        </li>
+
+        <li><a href="#properties">Listings</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <a href="#contact" class="nav-cta">Book a Tour</a>
+
+      <!-- Mobile hamburger -->
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#properties" onclick="closeMobile()">Properties</a>
+    <a href="#about"      onclick="closeMobile()">About</a>
+    <a href="#contact"    onclick="closeMobile()">Contact</a>
+    <a href="#contact"    onclick="closeMobile()" style="color:var(--color-accent)">Book a Tour →</a>
+  </div>
+
+  <!-- ============================================================
+       HERO SECTION
+       ============================================================ -->
+  <section class="hero" id="home">
+
+    <!-- IMAGE SLOT 1: Hero Background
+         Replace the div below with an <img> tag pointing to your image:
+         <img src="images/hero-background.jpg" alt="Windsor Properties">
+    -->
+    <div class="hero-bg">
+      <img src="../images/653%20photos/653%20Main%20photo%20of%20the%20house%20.png" alt="JIN Properties — 653 House">
+    </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Student Living<br>
+        <em>Elevated</em><br>
+        in Windsor
+      </h1>
+      <div class="hero-actions">
+        <a href="#properties" class="btn btn-solid">Explore Properties <span class="arrow">→</span></a>
+        <a href="#contact"    class="btn">Book a Viewing</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INTRO / DESCRIPTION SECTION
+       Sits between the hero and the Collections grid
+       ============================================================ -->
+  <section class="intro" id="intro">
+    <p class="intro-label fade-in">JIN Properties — Windsor, Ontario</p>
+    <p class="intro-text fade-in fade-in-delay-1">
+      Three premium student houses steps from the
+      <em>University of Windsor</em> — fully furnished,
+      thoughtfully designed, built for how students actually live.
+    </p>
+    <div class="intro-stats fade-in fade-in-delay-2">
+      <div class="intro-stat">
+        <div class="intro-stat-num">3</div>
+        <div class="intro-stat-lbl">Houses</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-num">UWindsor</div>
+        <div class="intro-stat-lbl">Walking Distance</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-num">100%</div>
+        <div class="intro-stat-lbl">Furnished</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PROPERTIES LISTING
+       EDIT: Add/remove cards, update all property details
+       To add a new property: duplicate a .property-card block,
+       change data-collection, update text, and replace image src.
+       ============================================================ -->
+  <section class="properties" id="properties">
+    <div class="properties-header">
+      <p class="label fade-in">Available Properties</p>
+      <h2 class="section-title fade-in fade-in-delay-1">Luxury Student Rentals</h2>
+
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="student" onclick="filterProperties('student')">Luxury Student Rentals</button>
+      </div>
+    </div>
+
+    <div class="properties-grid" id="propertiesGrid">
+
+      <!-- PROPERTY 1 — 653 House -->
+      <div class="property-card visible" data-collection="student" data-property="653" onclick="openProperty('653')">
+        <div class="card-img">
+          <img src="../images/653%20photos/653%20Main%20photo%20of%20the%20house%20.png" alt="653 House">
+          <span class="card-badge">Available</span>
+        </div>
+        <div class="card-body">
+          <p class="card-collection">Luxury Student Rental</p>
+          <h3 class="card-name">653 Bridge Avenue</h3>
+          <p class="card-address">653 Bridge Avenue, Windsor, ON</p>
+          <div class="card-meta">
+            <div class="card-meta-item"><span class="card-meta-val">2</span><span class="card-meta-key">Units</span></div>
+            <div class="card-meta-item"><span class="card-meta-val">9</span><span class="card-meta-key">Bedrooms</span></div>
+            <div class="card-meta-item"><span class="card-meta-val">9</span><span class="card-meta-key">Bathrooms</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROPERTY 2 — 709 House -->
+      <div class="property-card visible" data-collection="student" data-property="709" onclick="openProperty('709')">
+        <div class="card-img">
+          <img src="../images/709/709%20Main%20photo%20of%20the%20house%20.png" alt="709 House">
+          <span class="card-badge">Available</span>
+        </div>
+        <div class="card-body">
+          <p class="card-collection">Luxury Student Rental</p>
+          <h3 class="card-name">709 Bridge Avenue</h3>
+          <p class="card-address">709 Bridge Avenue, Windsor, ON</p>
+          <div class="card-meta">
+            <div class="card-meta-item"><span class="card-meta-val">5</span><span class="card-meta-key">Units</span></div>
+            <div class="card-meta-item"><span class="card-meta-val">16</span><span class="card-meta-key">Bedrooms</span></div>
+            <div class="card-meta-item"><span class="card-meta-val">16</span><span class="card-meta-key">Bathrooms</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROPERTY 3 — 721 House -->
+      <div class="property-card visible" data-collection="student" data-property="721" onclick="openProperty('721')">
+        <div class="card-img">
+          <img src="../images/721%20photos%20/721%20Main%20photo%20of%20the%20house%20.png" alt="721 House">
+          <span class="card-badge">Available</span>
+        </div>
+        <div class="card-body">
+          <p class="card-collection">Luxury Student Rental</p>
+          <h3 class="card-name">721 Partington Avenue</h3>
+          <p class="card-address">721 Partington Avenue, Windsor, ON</p>
+          <div class="card-meta">
+            <div class="card-meta-item"><span class="card-meta-val">2</span><span class="card-meta-key">Units</span></div>
+            <div class="card-meta-item"><span class="card-meta-val">8</span><span class="card-meta-key">Bedrooms</span></div>
+            <div class="card-meta-item"><span class="card-meta-val">8</span><span class="card-meta-key">Bathrooms</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROPERTY DETAIL MODAL (gallery + Google Map)
+       ============================================================ -->
+  <div class="property-modal" id="propertyModal" onclick="if(event.target===this) closeProperty()">
+    <button class="modal-close" onclick="closeProperty()" aria-label="Close">×</button>
+    <div class="modal-inner">
+      <p class="modal-eyebrow" id="modalEyebrow">Luxury Student Rental</p>
+      <h2 class="modal-title" id="modalTitle">—</h2>
+      <p class="modal-address" id="modalAddress">—</p>
+      <p class="modal-description hidden" id="modalDescription"></p>
+
+      <div class="modal-features" id="modalFeatures"></div>
+
+      <p class="modal-section-label" id="modalUnitsLabel">Available Units</p>
+      <div class="modal-units" id="modalUnits"></div>
+
+      <p class="modal-section-label">Pricing</p>
+      <div class="pricing-inquire">
+        <div>
+          <p class="pricing-inquire-title" id="modalPricingTitle">Pricing <em>varies</em> by season, lease term, and move-in date.</p>
+          <p class="pricing-inquire-sub" id="modalPricingSub">For current rates and availability on this property, reach out directly — we respond to every inquiry personally and tailor each quote to the room you're interested in.</p>
+        </div>
+        <div class="pricing-inquire-actions">
+          <button type="button" class="pricing-inquire-btn primary" id="modalPricingContact">Contact Management →</button>
+        </div>
+      </div>
+
+      <p class="modal-section-label">Photo Gallery</p>
+      <div class="modal-gallery" id="modalGallery"></div>
+
+      <p class="modal-section-label">Walking Route to the University of Windsor</p>
+      <div class="modal-map">
+        <iframe id="modalMap" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <p class="modal-map-caption" id="modalMapCaption"></p>
+      <div class="modal-map-actions">
+        <a id="modalMapLink" class="modal-map-link" target="_blank" rel="noopener">Open in Google Maps →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LIGHTBOX (fullscreen photo viewer)
+       ============================================================ -->
+  <div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
+    <button class="lightbox-btn lightbox-close-btn" onclick="closeLightbox()" aria-label="Close">×</button>
+    <button class="lightbox-btn lightbox-prev" onclick="lightboxStep(-1)" aria-label="Previous">‹</button>
+    <div class="lightbox-img-wrap">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <button class="lightbox-btn lightbox-next" onclick="lightboxStep(1)" aria-label="Next">›</button>
+    <div class="lightbox-caption">
+      <span id="lightboxLabel">—</span>
+      <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       UPCOMING PROJECT
+       Sits between Available Properties and About
+       ============================================================ -->
+  <section class="upcoming" id="upcoming">
+    <div class="upcoming-inner">
+      <div class="upcoming-visual fade-in">
+        <div class="upcoming-img">
+          <img src="../new%20house/2c3275c326f20c675fa4701c9b35131eac5a5227fe12515003bb0366e6e61eb7.png" alt="JIN Properties — upcoming residence">
+        </div>
+        <span class="upcoming-badge">Now Building</span>
+      </div>
+      <div class="upcoming-content">
+        <p class="label fade-in">Coming Soon</p>
+        <h2 class="section-title fade-in fade-in-delay-1">
+          Our Next<br><em>Residence</em>
+        </h2>
+        <p class="upcoming-body fade-in fade-in-delay-2">
+          Construction is underway on the next addition to the JIN Properties portfolio —
+          a contemporary multi-storey student rental built to the same standard that
+          defines the rest of our houses. Layout, address, and availability details will
+          be released as the project progresses.
+        </p>
+        <div class="upcoming-actions fade-in fade-in-delay-2">
+          <button type="button" class="btn btn-solid" onclick="openProperty('720')">View More Details <span class="arrow">→</span></button>
+          <a href="#contact" class="btn">Be the First to Know</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT SECTION
+       EDIT: Update brand name, quote, body copy, and stats
+       ============================================================ -->
+  <section id="about">
+    <div class="about">
+
+      <div class="about-visual fade-in">
+        <div class="about-img">
+          <img src="../images/709/709%20Main%20photo%20of%20the%20house%20.png" alt="JIN Properties">
+        </div>
+
+        <div class="about-accent-box">
+          <div class="about-accent-num">3</div>
+          <div class="about-accent-lbl">Premium Houses</div>
+        </div>
+      </div>
+
+      <div class="about-content">
+        <p class="label fade-in">Who We Are</p>
+        <h2 class="section-title fade-in fade-in-delay-1" style="margin: 0.8rem 0 1.5rem;">
+          About<br>JIN Properties
+        </h2>
+
+        <blockquote class="about-quote fade-in fade-in-delay-1">
+          "Student housing should feel like home — not a compromise. We built JIN Properties to prove it."
+        </blockquote>
+
+        <p class="about-body fade-in fade-in-delay-2">
+          JIN Properties is a Windsor-based business focused on providing luxury student rentals
+          exclusively for students attending the University of Windsor. Every home in our portfolio
+          is fully furnished and thoughtfully designed to give students a clean, comfortable
+          environment where they can rest well, focus on their studies, and pursue a greater future.
+          <br><br>
+          From the materials we build with to the standards we hold every property to, every detail
+          is shaped by one belief — where you live shapes how you learn.
+        </p>
+
+        <a href="#contact" class="btn fade-in fade-in-delay-2">
+          Start the Conversation <span class="arrow">→</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA SECTION
+       EDIT: Headline and subtext
+       ============================================================ -->
+  <section class="cta">
+    <div class="cta-bg">
+      <img src="../images/721%20photos%20/721%20Main%20photo%20of%20the%20house%20.png" alt="">
+    </div>
+    <div class="cta-overlay"></div>
+    <div class="cta-content">
+      <p class="label fade-in" style="color:var(--color-accent); margin-bottom:1rem;">Book Your Viewing</p>
+      <h2 class="cta-title fade-in fade-in-delay-1">
+        Find Your<br><em>JIN House</em><br>in Windsor
+      </h2>
+      <p class="cta-sub fade-in fade-in-delay-2">
+        Schedule a viewing of the 653, 709, or 721 — or ask us anything about availability.
+        We respond to every inquiry directly.
+      </p>
+      <div class="cta-actions fade-in fade-in-delay-2">
+        <a href="#contact" class="btn btn-solid">Book a Viewing <span class="arrow">→</span></a>
+        <a href="mailto:rickyjin88@gmail.com" class="btn">rickyjin88@gmail.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT SECTION
+       EDIT: Company details, phone, email, address
+       ============================================================ -->
+  <section id="contact">
+    <div class="contact">
+
+      <div class="contact-info fade-in">
+        <p class="label" style="margin-bottom:1rem;">Get in Touch</p>
+        <h2>Let's Find<br>Your Next Home.</h2>
+        <p>
+          Whether you're looking to rent, invest, or learn more about what's available in Windsor,
+          our team is ready to help. Fill out the form and we'll be in touch promptly.
+        </p>
+
+        <div class="contact-detail">
+          <div class="contact-detail-row">
+            <div class="contact-detail-icon">✉</div>
+            <div>
+              <div class="contact-detail-label">Email</div>
+              <div class="contact-detail-text"><a href="mailto:rickyjin88@gmail.com">rickyjin88@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="contact-detail-row">
+            <div class="contact-detail-icon">📍</div>
+            <div>
+              <div class="contact-detail-label">Location</div>
+              <div class="contact-detail-text">Windsor, Ontario, Canada</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <form class="contact-form fade-in fade-in-delay-1" id="contactForm">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="Jane" />
+          </div>
+          <div class="form-field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Doe" />
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="jane@example.com" />
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(519) 000-0000" />
+        </div>
+        <div class="form-field">
+          <label for="interest">I'm Interested In</label>
+          <select id="interest">
+            <option value="">Select a property…</option>
+            <option>653 Bridge Avenue</option>
+            <option>709 Bridge Avenue</option>
+            <option>721 Partington Avenue</option>
+            <option>720 Partington Avenue (Coming Soon)</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell us about what you're looking for…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-solid" style="width:100%; justify-content:center;">
+          Send Inquiry <span class="arrow">→</span>
+        </button>
+        <p id="formMsg" style="font-size:0.75rem; color:var(--color-accent); display:none; text-align:center;">
+          ✓ Thank you! We'll be in touch shortly.
+        </p>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       EDIT: Brand name, links, copyright year, legal pages
+       ============================================================ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">JIN Properties<span style="color:var(--color-accent)">.</span></a>
+          <p>Luxury student rentals in Windsor, Ontario.
+          Three houses, fully furnished, built for how students actually live.</p>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Properties</p>
+          <ul class="footer-links">
+            <li><a href="#properties">653 Bridge Avenue</a></li>
+            <li><a href="#properties">709 Bridge Avenue</a></li>
+            <li><a href="#properties">721 Partington Avenue</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Company</p>
+          <ul class="footer-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Tenant &amp; Legal</p>
+          <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 JIN Properties. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT — interactions & animations
+       ============================================================ -->
+  <script>
+    /* — Navigation scroll effect — */
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* — Mobile menu — */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    /* — Property filter — */
+    function filterProperties(collection) {
+      // Update active tab
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.filter === collection);
+      });
+
+      // Show/hide cards with a stagger animation
+      const cards = document.querySelectorAll('.property-card');
+      let delay = 0;
+      cards.forEach(card => {
+        const show = collection === 'all' || card.dataset.collection === collection;
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        if (show) {
+          card.classList.add('visible');
+          setTimeout(() => {
+            card.style.transition = `opacity 0.4s ease ${delay}ms, transform 0.4s ease ${delay}ms`;
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+            delay += 60;
+          }, 10);
+        } else {
+          setTimeout(() => card.classList.remove('visible'), 400);
+        }
+      });
+    }
+
+    // Init: show all
+    filterProperties('all');
+
+    /* — Scroll-triggered fade-in animations — */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* — Property detail modal — */
+    /* ============================================================
+       ROOM PRICING — edit the `pricing` object for each property
+       below to set monthly rates for Large / Medium / Small rooms.
+       Use a string like '$1,200/mo' or leave as '' to display
+       "Contact for pricing" until rates are confirmed.
+       ============================================================ */
+    const PROPERTIES = {
+      '653': {
+        title: '653 Bridge Avenue',
+        address: '653 Bridge Avenue, Windsor, ON',
+        mapQuery: '653 Bridge Avenue, Windsor, Ontario, Canada',
+        walkDistance: '500 metres',
+        walkTime: '7-minute walk',
+        description: `A custom-built raised-ranch designed <em>exclusively as a premium student rental</em>, just <em>500 metres</em> — a seven-minute walk — from the University of Windsor. Completed in <em>2022</em> with the latest construction materials, the home features a fresh-air ventilation system and an ultra-quiet, high-efficiency furnace and air conditioner. Every tenant has their <em>own private ensuite washroom</em>, an oversized bedroom, and a walk-in closet — fully furnished with a full-size bed, mattress, desk, and chairs. Nine-foot ceilings, premium finishes, and a thoughtful layout deliver a clean, comfortable, and welcoming home built around the way students actually live. <em>All utilities and high-speed internet included.</em>`,
+        features: [
+          { val: '2', key: 'Units' },
+          { val: '9', key: 'Bedrooms' },
+          { val: '9', key: 'Bathrooms' },
+          { val: 'Furnished', key: 'Included' }
+        ],
+        units: [
+          {
+            name: 'Upper Unit',
+            specs: [
+              '5 bedrooms',
+              '5 bathrooms',
+              '1 kitchen',
+              '1 living-dining room'
+            ]
+          },
+          {
+            name: 'Lower Unit',
+            specs: [
+              '4 bedrooms',
+              '4 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          }
+        ],
+        pricing: {
+          large:  '',  // TODO: e.g. '$1,400/mo'
+          medium: '',  // TODO: e.g. '$1,200/mo'
+          small:  ''   // TODO: e.g. '$1,000/mo'
+        },
+        unitPhotos: {
+          'Upper Unit': [
+            { src: '../website%20photos/653%20photos/653%20upper/KITCHEN%20PHOTE%20MUST%20INCLUDE%20.jpg',               label: 'Kitchen' },
+            { src: '../website%20photos/653%20photos/653%20upper/2nd%20Kitchen3%20MUST%20INCLUDE%20.jpg',                label: 'Kitchen & Dining' },
+            { src: '../website%20photos/653%20photos/653%20upper/203%20Bedroom2.jpg',                                   label: 'Bedroom' },
+            { src: '../website%20photos/653%20photos/653%20upper/ROOM%20MUST%20INCLUDE%20.jpg',                          label: 'Bedroom 2' },
+            { src: '../website%20photos/653%20photos/653%20upper/Gemini_Generated_Image_kkjs0kkkjs0kkkjs.png',          label: 'Bedroom 3' },
+            { src: '../website%20photos/653%20photos/653%20upper/202%20washroom1%20%20(1).jpg',                         label: 'Washroom' },
+            { src: '../website%20photos/653%20photos/653%20upper/20221206-%20washroom.jpg',                             label: 'Washroom 2' },
+            { src: '../website%20photos/653%20photos/653%20upper/20221206%20Utilities%20room.jpg',                      label: 'Utility & Laundry Room' }
+          ],
+          'Lower Unit': [
+            { src: '../website%20photos/653%20photos/653%20lower/1012nd%20Kitchen%20must%20include%20.jpg',             label: 'Kitchen' },
+            { src: '../website%20photos/653%20photos/653%20lower/20250430_100034.jpg',                                  label: 'Bedroom' },
+            { src: '../website%20photos/653%20photos/653%20lower/20250501_184806.jpg',                                  label: 'Bedroom 2' },
+            { src: '../website%20photos/653%20photos/653%20lower/20250501_184814.jpg',                                  label: 'Bedroom 3' },
+            { src: '../website%20photos/653%20photos/653%20lower/Gemini_Generated_Image_7da96q7da96q7da9.png',          label: 'Ensuite & Walk-in Closet' },
+            { src: '../website%20photos/653%20photos/653%20lower/Gemini_Generated_Image_t4eh6wt4eh6wt4eh.png',          label: 'Washroom' },
+            { src: '../website%20photos/653%20photos/653%20lower/laundry%20MUST%20INCLUDE%20.jpg',                      label: 'In-Suite Laundry' }
+          ]
+        },
+        photos: [
+          { src: '../images/653%20photos/653%20Main%20photo%20of%20the%20house%20.png', label: 'Exterior' },
+          { src: '../images/653%20photos/653%20bedroom%20.jpg', label: 'Bedroom' },
+          { src: '../images/653%20photos/653%20kitchen%20.png', label: 'Kitchen' },
+          { src: '../images/653%20photos/653%20kitchen%202.png', label: 'Kitchen — Second View' },
+          { src: '../images/653%20photos/653%20washroom.jpg', label: 'Washroom' }
+        ]
+      },
+      '709': {
+        title: '709 Bridge Avenue',
+        address: '709 Bridge Avenue, Windsor, ON',
+        mapQuery: '709 Bridge Avenue, Windsor, Ontario, Canada',
+        walkDistance: '550 metres',
+        walkTime: '8-minute walk',
+        description: `A custom-built two-and-a-half-storey residence designed <em>exclusively as a premium student rental</em>, just <em>550 metres</em> — an eight-minute walk — from the University of Windsor. The home spans <em>five units, sixteen bedrooms, and sixteen bathrooms</em>, completed in <em>2025</em> with the latest construction materials and a fresh-air ventilation system that runs throughout. Every tenant has their <em>own private ensuite washroom</em>, an oversized bedroom, and a walk-in closet — fully furnished with a full-size bed, mattress, desk, and chairs. Nine-foot ceilings, premium finishes, and a thoughtful layout deliver a clean, comfortable, and welcoming home built around the way students actually live. <em>All utilities and high-speed internet included.</em>`,
+        features: [
+          { val: '5', key: 'Units' },
+          { val: '16', key: 'Bedrooms' },
+          { val: '16', key: 'Bathrooms' },
+          { val: 'Furnished', key: 'Included' }
+        ],
+        units: [
+          {
+            name: 'Front 2nd Floor Unit',
+            specs: [
+              '3 large bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Front Ground Floor Unit',
+            specs: [
+              '3 large bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room'
+            ]
+          },
+          {
+            name: 'Front Semi-Ground Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Rear Upper Unit',
+            specs: [
+              '5 bedrooms',
+              '5 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Rear Lower Unit',
+            specs: [
+              '2 bedrooms',
+              '2 bathrooms',
+              '1 kitchen',
+              '1 laundry'
+            ]
+          }
+        ],
+        pricing: {
+          large:  '',  // TODO: e.g. '$1,400/mo'
+          medium: '',  // TODO: e.g. '$1,200/mo'
+          small:  ''   // TODO: e.g. '$1,000/mo'
+        },
+        unitPhotos: {
+          'Front 2nd Floor Unit': [
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(21%20-%2044).jpg',                            label: 'Living & Kitchen' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20LIVING%20ROOM%20PHOTO%20(MUST%20INCLUDE).jpg',         label: 'Living Room' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(28%20-%2044).jpg',                            label: 'Bedroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(22%20-%2044)%20(1).jpg',                      label: 'Bedroom 2' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(25%20-%2044).jpg',                            label: 'Bedroom 3' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20WASHROOM%20MUST%20INCLUDE%20.jpg',                     label: 'Washroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%202nd%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(19%20-%2044).jpg',                            label: 'In-Suite Laundry' }
+          ],
+          'Front Ground Floor Unit': [
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(5%20-%2044).jpg',                       label: 'Living & Kitchen' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(8%20-%2044).jpg',                       label: 'Kitchen' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(12%20-%2044).jpg',                      label: 'Bedroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20BEDROOM%20PHOTO%20MUST%20INCLUDE%20.jpg',         label: 'Bedroom 2' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(16%20-%2044).jpg',                      label: 'Bedroom 3' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(11%20-%2044).jpg',                      label: 'Washroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%201ST%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20WASHROOM%202ND%20MUST%20INCLUDE%20.jpg',          label: 'Washroom 2' }
+          ],
+          'Front Semi-Ground Unit': [
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(33%20-%2044).jpg',                  label: 'Kitchen' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20kitchen%20second%20must%20include%20.jpg',  label: 'Kitchen 2' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(40%20-%2044).jpg',                  label: 'Bedroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20briidge%20ave%20bedroom%20must%20include%20.jpg',          label: 'Bedroom 2' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(43%20-%2044).jpg',                  label: 'Bedroom 3' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(38%20-%2044).jpg',                  label: 'Washroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Front%20Semi-Ground%20floor%203B3B%20UNIT/709%20Bridge%20Ave%20Front%20(35%20-%2044).jpg',                  label: 'Hallway & Laundry' }
+          ],
+          'Rear Upper Unit': [
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Upper%205B5B%20UNIT/709%20Bridge%20Ave%20MUST%20INCLUDE%20.jpg',         label: 'Kitchen & Dining' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Upper%205B5B%20UNIT/709%20Bridge%20Ave%20%20(10%20-%2034).jpg',          label: 'Bedroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Upper%205B5B%20UNIT/709%20Bridge%20Ave%20%20(22%20-%2034).jpg',          label: 'Bedroom 2' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Upper%205B5B%20UNIT/709%20Bridge%20Ave%20%20BEDROOM%20MUST%20INCLUDE.jpg', label: 'Bedroom 3' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Upper%205B5B%20UNIT/709%20Bridge%20Ave%20%20MUST%20INCLUDE%20.jpg',       label: 'Washroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Upper%205B5B%20UNIT/709%20Bridge%20Ave%20%20(16%20-%2034).jpg',          label: 'In-Suite Laundry' }
+          ],
+          'Rear Lower Unit': [
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Semi-Ground%20floor%202B2B%20UNIT/709%20Bridge%20Ave%20%20(29%20-%2034).jpg',                       label: 'Kitchen & Living' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Semi-Ground%20floor%202B2B%20UNIT/709%20Bridge%20Ave%20%20(28%20-%2034).jpg',                       label: 'Kitchen' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Semi-Ground%20floor%202B2B%20UNIT/709%20Bridge%20Ave%20%20(30%20-%2034).jpg',                       label: 'Bedroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Semi-Ground%20floor%202B2B%20UNIT/709%20Bridge%20Ave%20%20(31%20-%2034).jpg',                       label: 'Bedroom 2' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Semi-Ground%20floor%202B2B%20UNIT/709%20Bridge%20Ave%20%20(32%20-%2034).jpg',                       label: 'Washroom' },
+            { src: '../website%20photos/709%20photos/709%20Bridge%20Rear%20Semi-Ground%20floor%202B2B%20UNIT/709%20Bridge%20Ave%20Front%20LAUNDRY%20MUST%20INCLUDE%20.jpg',     label: 'In-Suite Laundry' }
+          ]
+        },
+        photos: [
+          { src: '../images/709/709%20Main%20photo%20of%20the%20house%20.png', label: 'Exterior' },
+          { src: '../images/709/709%20bedroom%20.png', label: 'Bedroom' },
+          { src: '../images/709/709%20bedroom%202.jpg', label: 'Bedroom — Second View' },
+          { src: '../images/709/709%20bedroom%203%20.jpg', label: 'Bedroom — Third View' },
+          { src: '../images/709/709%20kitchen.png', label: 'Kitchen' },
+          { src: '../images/709/709%20washroom%20.png', label: 'Washroom' }
+        ]
+      },
+      '721': {
+        title: '721 Partington Avenue',
+        address: '721 Partington Avenue, Windsor, ON',
+        mapQuery: '721 Partington Avenue, Windsor, Ontario, Canada',
+        walkDistance: '500 metres',
+        walkTime: '7-minute walk',
+        description: `A custom-built raised-ranch designed <em>exclusively as a premium student rental</em>, sitting just <em>500 metres</em> — a seven-minute walk — from the University of Windsor. Built in <em>2020</em> with the latest construction materials, the home features a fresh-air ventilation system and an ultra-quiet, high-efficiency furnace and air conditioner. Every tenant has their <em>own private ensuite washroom</em>, an oversized bedroom, and a walk-in closet — fully furnished with a full-size bed, mattress, desk, and chairs. Nine-foot ceilings, premium finishes, and a thoughtful layout deliver a clean, comfortable, and welcoming home built around the way students actually live. <em>All utilities and high-speed internet included.</em>`,
+        features: [
+          { val: '2', key: 'Units' },
+          { val: '8', key: 'Bedrooms' },
+          { val: '8', key: 'Bathrooms' },
+          { val: 'Furnished', key: 'Included' }
+        ],
+        units: [
+          {
+            name: 'Upper Unit',
+            specs: [
+              '4 bedrooms',
+              '4 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Lower Unit',
+            specs: [
+              '4 bedrooms',
+              '4 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          }
+        ],
+        pricing: {
+          large:  '',  // TODO: e.g. '$1,400/mo'
+          medium: '',  // TODO: e.g. '$1,200/mo'
+          small:  ''   // TODO: e.g. '$1,000/mo'
+        },
+        unitPhotos: {
+          'Upper Unit': [
+            { src: '../website%20photos/721%20photos/721%20upper/KITCH%20MUST%20INCLUDE%20.jpg',               label: 'Living Area' },
+            { src: '../website%20photos/721%20photos/721%20upper/kitchen%20MUST%20INCLUDE%20.jpg',             label: 'Kitchen' },
+            { src: '../website%20photos/721%20photos/721%20upper/Gemini_Generated_Image_5kun2w5kun2w5kun.png', label: 'Kitchen 2' },
+            { src: '../website%20photos/721%20photos/721%20upper/Gemini_Generated_Image_71fs9s71fs9s71fs.png', label: 'Bedroom' },
+            { src: '../website%20photos/721%20photos/721%20upper/Gemini_Generated_Image_yg3ngayg3ngayg3n.png', label: 'Washroom' }
+          ],
+          'Lower Unit': [
+            { src: '../website%20photos/721%20photos/721%20lower/kitchen%20MUST%20INCLUDE%20%20copy.jpg',      label: 'Kitchen' },
+            { src: '../website%20photos/721%20photos/721%20lower/KITCH%20MUST%20INCLUDE%20%20copy.jpg',        label: 'Living Area' },
+            { src: '../website%20photos/721%20photos/721%20lower/Gemini_Generated_Image_lxbhellxbhellxbh.png', label: 'Bedroom' },
+            { src: '../website%20photos/721%20photos/721%20lower/Gemini_Generated_Image_yytf11yytf11yytf.png', label: 'Bedroom 2' },
+            { src: '../website%20photos/721%20photos/721%20lower/Gemini_Generated_Image_3mya243mya243mya.png', label: 'Bedroom 3' },
+            { src: '../website%20photos/721%20photos/721%20lower/Gemini_Generated_Image_4z0qjm4z0qjm4z0q.png', label: 'Washroom' },
+            { src: '../website%20photos/721%20photos/721%20lower/Gemini_Generated_Image_thnxp3thnxp3thnx.png', label: 'Washroom 2' }
+          ]
+        },
+        photos: [
+          { src: '../images/721%20photos%20/721%20Main%20photo%20of%20the%20house%20.png', label: 'Exterior' },
+          { src: '../images/721%20photos%20/721%20room%20photos.png', label: 'Bedroom' },
+          { src: '../images/721%20photos%20/721%20room%20photo%202.png', label: 'Bedroom — Second View' },
+          { src: '../images/721%20photos%20/721%20kitchen.png', label: 'Kitchen' },
+          { src: '../images/721%20photos%20/721%20washroom.png', label: 'Washroom' }
+        ]
+      },
+      '720': {
+        title: '720 Partington Avenue',
+        address: '720 Partington Avenue, Windsor, ON',
+        mapQuery: '720 Partington Avenue, Windsor, Ontario, Canada',
+        walkDistance: '500 metres',
+        walkTime: '7-minute walk',
+        comingSoon: true,
+        completion: 'August 2026',
+        description: `A custom-designed student rental currently under construction at <em>720 Partington Avenue</em>, set for <em>completion by August 2026</em>. The home spans <em>six units, eighteen bedrooms, and eighteen bathrooms</em>, built with the latest construction materials and the same standard that defines the rest of the JIN Properties portfolio. A fresh-air ventilation system and an ultra-quiet, high-efficiency furnace and air conditioner run throughout. Every oversized bedroom comes with a private ensuite and walk-in closet, fully furnished with a full-size bed, mattress, desk, and chairs. <em>All utilities and high-speed internet included.</em>`,
+        features: [
+          { val: '6',        key: 'Units' },
+          { val: '18',       key: 'Bedrooms' },
+          { val: '18',       key: 'Bathrooms' },
+          { val: 'Aug 2026', key: 'Completion' }
+        ],
+        units: [
+          {
+            name: 'Front 2nd Floor Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Front Ground Floor Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Front Semi-Ground Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Rear Upper Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Rear Ground Floor Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          },
+          {
+            name: 'Rear Lower Unit',
+            specs: [
+              '3 bedrooms',
+              '3 bathrooms',
+              '1 kitchen',
+              '1 living-dining room',
+              '1 laundry'
+            ]
+          }
+        ],
+        photos: [
+          { src: '../new%20house/2c3275c326f20c675fa4701c9b35131eac5a5227fe12515003bb0366e6e61eb7.png', label: 'Architectural Rendering — All Elevations' }
+        ]
+      }
+    };
+
+    const propertyModal = document.getElementById('propertyModal');
+    function openProperty(id) {
+      const p = PROPERTIES[id];
+      if (!p) return;
+      const isComingSoon = p.comingSoon === true;
+      document.getElementById('modalEyebrow').textContent = isComingSoon
+        ? `Coming Soon — Completion ${p.completion || 'TBA'}`
+        : 'Luxury Student Rental';
+      document.getElementById('modalTitle').textContent = p.title;
+      document.getElementById('modalAddress').textContent = p.address;
+
+      const descEl = document.getElementById('modalDescription');
+      if (p.description) {
+        descEl.innerHTML = p.description;
+        descEl.classList.remove('hidden');
+      } else {
+        descEl.innerHTML = '';
+        descEl.classList.add('hidden');
+      }
+
+      const featuresEl = document.getElementById('modalFeatures');
+      featuresEl.innerHTML = p.features.map(f =>
+        `<div class="modal-feature"><div class="modal-feature-val">${f.val}</div><div class="modal-feature-key">${f.key}</div></div>`
+      ).join('');
+
+      const unitsLabel = document.getElementById('modalUnitsLabel');
+      const unitsEl = document.getElementById('modalUnits');
+      const hasUnits = Array.isArray(p.units) && p.units.length > 0;
+      unitsLabel.style.display = hasUnits ? '' : 'none';
+      unitsEl.style.display = hasUnits ? '' : 'none';
+      unitsEl.innerHTML = (p.units || []).map((u, idx) => {
+        const unitPhotos = p.unitPhotos?.[u.name] || [];
+        const hasPhotos = unitPhotos.length > 0;
+        const thumbs = hasPhotos
+          ? `<div class="unit-photo-grid">${unitPhotos.map((ph, i) =>
+              `<div class="unit-photo-thumb" data-unit-idx="${idx}" data-photo-idx="${i}"><img src="${ph.src}" alt="${u.name} — ${ph.label || ''}"></div>`
+            ).join('')}</div>`
+          : '';
+        return `<div class="unit-card${hasPhotos ? ' has-photos' : ''}" data-unit-idx="${idx}">
+          <div class="unit-name">${u.name}</div>
+          <ul class="unit-specs">${u.specs.map(s => `<li>${s}</li>`).join('')}</ul>
+          ${thumbs}
+        </div>`;
+      }).join('');
+
+      unitsEl.querySelectorAll('.unit-card.has-photos').forEach(card => {
+        const unitIdx = parseInt(card.dataset.unitIdx);
+        const u = p.units[unitIdx];
+        const unitPhotos = p.unitPhotos[u.name] || [];
+
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.unit-photo-thumb')) return;
+          card.classList.toggle('expanded');
+        });
+
+        card.querySelectorAll('.unit-photo-thumb').forEach(thumb => {
+          thumb.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const photoIdx = parseInt(thumb.dataset.photoIdx);
+            openLightbox(unitPhotos, photoIdx, `${p.title} — ${u.name}`);
+          });
+        });
+      });
+
+      /* Auto-reveal: as user scrolls past each unit card inside the modal,
+         expand it (with a small stagger so cards reveal one by one even
+         when multiple come into view at once). The click toggle above
+         still works as a fallback for manual collapse. */
+      if (window._unitRevealObserver) window._unitRevealObserver.disconnect();
+      window._unitRevealObserver = new IntersectionObserver((entries) => {
+        let waveIdx = 0;
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.classList.contains('expanded')) {
+            const delay = waveIdx * 220;
+            setTimeout(() => entry.target.classList.add('expanded'), delay);
+            waveIdx++;
+            window._unitRevealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        root: propertyModal,
+        threshold: 0.18
+      });
+      unitsEl.querySelectorAll('.unit-card.has-photos').forEach(card => {
+        window._unitRevealObserver.observe(card);
+      });
+
+      const priceTitle = document.getElementById('modalPricingTitle');
+      const priceSub   = document.getElementById('modalPricingSub');
+      if (isComingSoon) {
+        priceTitle.innerHTML = `Rates <em>released</em> closer to completion.`;
+        priceSub.textContent = `Want to be on the preview list for ${p.title}? Get in touch and we'll reach out as the project nears handover in ${p.completion || 'the coming months'}.`;
+      } else {
+        priceTitle.innerHTML = `Pricing <em>varies</em> by season, lease term, and move-in date.`;
+        priceSub.textContent = `For current rates and availability on this property, reach out directly — we respond to every inquiry personally and tailor each quote to the room you're interested in.`;
+      }
+
+      const contactBtn = document.getElementById('modalPricingContact');
+      contactBtn.onclick = () => {
+        closeProperty();
+        setTimeout(() => {
+          const c = document.getElementById('contact');
+          if (c) c.scrollIntoView({ behavior: 'smooth' });
+          const interest = document.getElementById('interest');
+          if (interest) {
+            const opt = Array.from(interest.options).find(o => o.text === p.title);
+            if (opt) interest.value = opt.value || opt.text;
+          }
+        }, 320);
+      };
+
+      const galleryEl = document.getElementById('modalGallery');
+      galleryEl.innerHTML = p.photos.map((ph, i) =>
+        `<div><div class="gallery-item" data-property="${id}" data-photo-idx="${i}" onclick="openLightbox('${id}', ${i})"><img src="${ph.src}" alt="${p.title} — ${ph.label}"></div><div class="modal-caption">${ph.label}</div></div>`
+      ).join('');
+
+      const UWINDSOR = 'University of Windsor, Windsor, Ontario, Canada';
+      const origin = encodeURIComponent(p.address);
+      const dest   = encodeURIComponent(UWINDSOR);
+      document.getElementById('modalMap').src =
+        `https://maps.google.com/maps?saddr=${origin}&daddr=${dest}&dirflg=w&output=embed`;
+      document.getElementById('modalMapLink').href =
+        `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&travelmode=walking`;
+      const cap = document.getElementById('modalMapCaption');
+      if (p.walkDistance && p.walkTime) {
+        cap.innerHTML = `Pedestrian route shown above · <strong>≈ ${p.walkDistance}</strong> · ${p.walkTime} to the University of Windsor`;
+      } else {
+        cap.textContent = '';
+      }
+
+      propertyModal.classList.add('open');
+      document.body.classList.add('modal-open');
+      propertyModal.scrollTop = 0;
+    }
+    function closeProperty() {
+      propertyModal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      document.getElementById('modalMap').src = '';
+    }
+    /* — Lightbox (fullscreen photo viewer with prev/next) — */
+    const lightbox = document.getElementById('lightbox');
+    let lightboxState = { photos: [], index: 0, title: '' };
+
+    function openLightbox(photosOrPropertyId, index, title) {
+      let photos, displayTitle;
+      if (Array.isArray(photosOrPropertyId)) {
+        photos = photosOrPropertyId;
+        displayTitle = title || '';
+      } else {
+        const p = PROPERTIES[photosOrPropertyId];
+        if (!p) return;
+        photos = p.photos;
+        displayTitle = p.title;
+      }
+      lightboxState = { photos, index: index || 0, title: displayTitle };
+      renderLightbox();
+      lightbox.classList.add('open');
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+    }
+    function lightboxStep(delta) {
+      const photos = lightboxState.photos;
+      if (!photos.length) return;
+      lightboxState.index = (lightboxState.index + delta + photos.length) % photos.length;
+      renderLightbox();
+    }
+    function renderLightbox() {
+      const { photos, index, title } = lightboxState;
+      if (!photos.length) return;
+      const photo = photos[index];
+      const img = document.getElementById('lightboxImg');
+      img.src = photo.src;
+      img.alt = `${title} — ${photo.label || ''}`;
+      img.style.animation = 'none'; img.offsetHeight; img.style.animation = '';
+      const label = title ? `${title} — ${photo.label || ''}` : (photo.label || '');
+      document.getElementById('lightboxLabel').textContent = label;
+      document.getElementById('lightboxCounter').textContent = `${index + 1} / ${photos.length}`;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('open')) {
+        if (e.key === 'Escape')      closeLightbox();
+        if (e.key === 'ArrowRight')  lightboxStep(1);
+        if (e.key === 'ArrowLeft')   lightboxStep(-1);
+        return;
+      }
+      if (e.key === 'Escape' && propertyModal.classList.contains('open')) closeProperty();
+    });
+
+    /* ============================================================
+       AI PROPERTY CONCIERGE — "Windsor"
+       Direct browser-to-Anthropic call. The API key lives in
+       localStorage on the visitor's browser only because there's
+       no backend yet. PRODUCTION TODO: replace fetch URL below
+       with a tiny proxy on your own server (Cloudflare Worker,
+       Vercel function, etc.) that holds the key server-side.
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      const SYSTEM_PROMPT = `You are Windsor, the AI property concierge for JIN Properties — a luxury student rental portfolio in Windsor, Ontario, Canada. You help prospective student tenants find the right unit across our three houses.
+
+JIN PROPERTIES PORTFOLIO (all furnished, walking distance to the University of Windsor):
+
+653 Bridge Avenue — 2 units, 9 bedrooms total, 9 bathrooms total
+  • Upper Unit: 5 bedrooms, 5 bathrooms, 1 kitchen, 1 living-dining room
+  • Lower Unit: 4 bedrooms, 4 bathrooms, 1 kitchen, 1 living-dining room, 1 laundry
+
+709 Bridge Avenue — 5 units, 16 bedrooms total, 16 bathrooms total
+  • Front 2nd Floor Unit: 3 large bedrooms, 3 bathrooms, kitchen, living-dining room, laundry
+  • Front Ground Floor Unit: 3 large bedrooms, 3 bathrooms, kitchen, living-dining room
+  • Front Semi-Ground Unit: 3 bedrooms, 3 bathrooms, kitchen, living-dining room, laundry
+  • Rear Upper Unit: 5 bedrooms, 5 bathrooms, kitchen, living-dining room, laundry
+  • Rear Lower Unit: 2 bedrooms, 2 bathrooms, kitchen, laundry
+
+721 Partington Avenue — 2 units, 8 bedrooms total, 8 bathrooms total
+  • Upper Unit: 4 bedrooms, 4 bathrooms, kitchen, living-dining room, laundry
+  • Lower Unit: 4 bedrooms, 4 bathrooms, kitchen, living-dining room, laundry
+
+PRICING:
+Rooms are priced in three tiers — Large, Medium, Small — per house. Specific rates are not yet published. When asked, say: "Pricing is being confirmed for each room tier — for the most up-to-date rates I'd recommend reaching out directly. I can connect you to the team right now."
+
+NEIGHBOURHOOD:
+Bridge Avenue and Partington Avenue are in Windsor's University District — quiet, walkable streets within easy walking distance of the University of Windsor campus, transit, and shops.
+
+CONTACT:
+Email: rickyjin88@gmail.com  |  Windsor, Ontario, Canada
+Visitors can also book a viewing by filling out the form in the #contact section of this page.
+
+RULES:
+- Only answer questions about JIN Properties, the three houses, leasing, room sizes, availability, amenities, the booking process, and Windsor / University of Windsor general living info.
+- If a question is unrelated, politely redirect: "I'm here to help you find your ideal student rental at JIN Properties — is there anything I can help you with on that front?"
+- Never invent specific pricing or lease terms. Defer to the team for confirmation.
+- Always offer a clear next step (book a viewing, contact the team, explore a specific house).
+- Keep responses concise — 2 to 4 sentences max unless a comparison is requested.
+- Warm, professional, first-person tone.
+- When the user seems ready to commit, proactively offer to help them book a viewing.`;
+
+      const MODEL = 'claude-opus-4-7';
+      const API_KEY_STORAGE = 'JIN_ANTHROPIC_API_KEY';
+      const HISTORY_MAX = 20;
+      const conversationHistory = [];
+      let chatOpen = false;
+      let exitIntentShown = false;
+      let scrollPulseShown = false;
+      let suggestionsHidden = false;
+
+      // Inject UI ----------------------------------------------------------
+      const bubble = document.createElement('button');
+      bubble.className = 'chat-bubble';
+      bubble.setAttribute('aria-label', 'Open property assistant');
+      bubble.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+        <span class="chat-bubble-badge" id="chatBadge">1</span>`;
+      document.body.appendChild(bubble);
+
+      const tip = document.createElement('div');
+      tip.className = 'chat-tip';
+      tip.textContent = 'Have questions about this property? Ask me →';
+      document.body.appendChild(tip);
+
+      const win = document.createElement('div');
+      win.className = 'chat-window';
+      win.setAttribute('role', 'dialog');
+      win.setAttribute('aria-label', 'Property assistant');
+      win.innerHTML = `
+        <div class="chat-header">
+          <div class="chat-avatar">W</div>
+          <div class="chat-header-text">
+            <div class="chat-header-name">Windsor <span class="chat-status-dot" aria-hidden="true"></span></div>
+            <div class="chat-header-sub">Property Concierge</div>
+          </div>
+          <button class="chat-header-btn" id="chatMin" aria-label="Minimize">–</button>
+          <button class="chat-header-btn" id="chatClose" aria-label="Close">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages" role="log" aria-live="polite"></div>
+        <div class="chat-suggestions" id="chatSuggestions">
+          <button class="chat-suggestion">What properties are available now?</button>
+          <button class="chat-suggestion">How much are student rentals?</button>
+          <button class="chat-suggestion">Book a viewing</button>
+          <button class="chat-suggestion">Tell me about the University District</button>
+        </div>
+        <div class="chat-input-bar">
+          <span class="chat-charcount" id="chatCharCount"></span>
+          <input type="text" id="chatInput" maxlength="500" placeholder="Ask me anything about our properties…" aria-label="Message">
+          <button class="chat-send" id="chatSend" disabled aria-label="Send">→</button>
+        </div>`;
+      document.body.appendChild(win);
+
+      const messagesEl = win.querySelector('#chatMessages');
+      const suggestionsEl = win.querySelector('#chatSuggestions');
+      const input = win.querySelector('#chatInput');
+      const sendBtn = win.querySelector('#chatSend');
+      const charCount = win.querySelector('#chatCharCount');
+      const badge = bubble.querySelector('#chatBadge');
+
+      // Helpers ------------------------------------------------------------
+      function scrollToBottom() {
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+      function addMessage(role, text) {
+        const div = document.createElement('div');
+        div.className = `chat-msg ${role}`;
+        div.textContent = text;
+        messagesEl.appendChild(div);
+        scrollToBottom();
+        return div;
+      }
+      function addTyping() {
+        const div = document.createElement('div');
+        div.className = 'chat-typing';
+        div.innerHTML = '<span></span><span></span><span></span>';
+        messagesEl.appendChild(div);
+        scrollToBottom();
+        return div;
+      }
+      function maybeAddBookingButton(text) {
+        if (/(book|visit|schedule|tour|viewing)/i.test(text)) {
+          const btn = document.createElement('button');
+          btn.className = 'chat-action-btn';
+          btn.textContent = '📅 Book a Viewing Now →';
+          btn.addEventListener('click', () => {
+            closeChat();
+            const c = document.getElementById('contact');
+            if (c) c.scrollIntoView({ behavior: 'smooth' });
+          });
+          messagesEl.appendChild(btn);
+          scrollToBottom();
+        }
+      }
+      function hideSuggestions() {
+        if (!suggestionsHidden) {
+          suggestionsEl.classList.add('hidden');
+          suggestionsHidden = true;
+        }
+      }
+
+      function getApiKey() {
+        let key = localStorage.getItem(API_KEY_STORAGE);
+        if (!key) {
+          key = window.prompt(
+            'Enter your Anthropic API key to enable the AI concierge.\n\n' +
+            'WARNING: this stores the key in this browser only. Anyone using this device or viewing the page source while testing locally could see it. Use a backend proxy before going live.'
+          );
+          if (key && key.trim().startsWith('sk-')) {
+            localStorage.setItem(API_KEY_STORAGE, key.trim());
+            return key.trim();
+          }
+          return null;
+        }
+        return key;
+      }
+
+      // Open / close -------------------------------------------------------
+      function openChat() {
+        if (chatOpen) return;
+        chatOpen = true;
+        win.classList.add('open');
+        badge.classList.add('hidden');
+        if (messagesEl.children.length === 0) {
+          addMessage('assistant',
+            "Hi there! I'm Windsor, your property concierge. 👋 I can help you explore our listings, check availability, compare neighbourhoods, or book a viewing — what are you looking for today?");
+          conversationHistory.push({
+            role: 'assistant',
+            content: "Hi there! I'm Windsor, your property concierge. I can help you explore listings, check availability, compare neighbourhoods, or book a viewing — what are you looking for today?"
+          });
+        }
+        setTimeout(() => input.focus(), 320);
+        hideTip();
+      }
+      function closeChat() {
+        chatOpen = false;
+        win.classList.remove('open');
+      }
+      bubble.addEventListener('click', () => chatOpen ? closeChat() : openChat());
+      win.querySelector('#chatClose').addEventListener('click', closeChat);
+      win.querySelector('#chatMin').addEventListener('click', closeChat);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && chatOpen) closeChat();
+      });
+
+      // Input handling -----------------------------------------------------
+      input.addEventListener('input', () => {
+        const len = input.value.length;
+        sendBtn.disabled = len === 0;
+        if (500 - len < 100) {
+          charCount.textContent = (500 - len) + ' left';
+          charCount.classList.add('visible');
+        } else {
+          charCount.classList.remove('visible');
+        }
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !sendBtn.disabled) {
+          e.preventDefault();
+          handleSend();
+        }
+      });
+      sendBtn.addEventListener('click', handleSend);
+
+      suggestionsEl.querySelectorAll('.chat-suggestion').forEach(chip => {
+        chip.addEventListener('click', () => {
+          input.value = chip.textContent;
+          input.dispatchEvent(new Event('input'));
+          handleSend();
+        });
+      });
+
+      async function handleSend() {
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        sendBtn.disabled = true;
+        charCount.classList.remove('visible');
+        hideSuggestions();
+        addMessage('user', text);
+        conversationHistory.push({ role: 'user', content: text });
+
+        const typing = addTyping();
+        const apiKey = getApiKey();
+        if (!apiKey) {
+          typing.remove();
+          addMessage('assistant', "I need an API key to answer that — please refresh and provide one when prompted, or contact the team directly at rickyjin88@gmail.com.");
+          return;
+        }
+
+        try {
+          const trimmed = conversationHistory.slice(-HISTORY_MAX);
+          const res = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'anthropic-version': '2023-06-01',
+              'anthropic-dangerous-direct-browser-access': 'true',
+              'x-api-key': apiKey
+            },
+            body: JSON.stringify({
+              model: MODEL,
+              max_tokens: 400,
+              stream: true,
+              system: SYSTEM_PROMPT,
+              messages: trimmed
+            })
+          });
+
+          if (!res.ok) {
+            typing.remove();
+            const status = res.status;
+            if (status === 429) {
+              addMessage('assistant', "I'm getting a lot of questions right now — give me just a moment and try again.");
+            } else if (status >= 500) {
+              addMessage('assistant', "Something went wrong on my end. For immediate help, email us at rickyjin88@gmail.com.");
+            } else if (status === 401 || status === 403) {
+              addMessage('assistant', "Your API key didn't work. You can reset it from the browser console: localStorage.removeItem('JIN_ANTHROPIC_API_KEY')");
+            } else {
+              addMessage('assistant', "I didn't quite catch that — could you rephrase your question?");
+            }
+            return;
+          }
+
+          // Replace typing with empty bubble, stream into it
+          typing.remove();
+          const bubbleEl = addMessage('assistant', '');
+          let assistantText = '';
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            for (const line of lines) {
+              if (!line.startsWith('data: ')) continue;
+              const data = line.slice(6).trim();
+              if (!data || data === '[DONE]') continue;
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                  assistantText += parsed.delta.text;
+                  bubbleEl.textContent = assistantText;
+                  scrollToBottom();
+                }
+              } catch {}
+            }
+          }
+
+          if (!assistantText.trim()) {
+            bubbleEl.textContent = "I didn't quite catch that — could you rephrase your question?";
+            assistantText = bubbleEl.textContent;
+          }
+          conversationHistory.push({ role: 'assistant', content: assistantText });
+          maybeAddBookingButton(assistantText);
+        } catch (err) {
+          typing.remove();
+          if (!navigator.onLine) {
+            addMessage('assistant', "It looks like you've lost internet connection. Once you're back online I'll be ready.");
+          } else {
+            addMessage('assistant', "Something went wrong on my end. For immediate help, call us at (416) 985-5481.");
+          }
+        }
+      }
+
+      // Tooltip / triggers -------------------------------------------------
+      let tipTimer = null, tipPropertyName = null;
+      function showTip(name) {
+        tipPropertyName = name;
+        tip.classList.add('visible');
+      }
+      function hideTip() {
+        tip.classList.remove('visible');
+        tipPropertyName = null;
+      }
+      tip.addEventListener('click', () => {
+        const name = tipPropertyName;
+        hideTip();
+        openChat();
+        if (name) {
+          input.value = `Tell me more about ${name}`;
+          input.dispatchEvent(new Event('input'));
+        }
+      });
+
+      document.querySelectorAll('.property-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          if (chatOpen) return;
+          tipTimer = setTimeout(() => {
+            const name = card.querySelector('.card-name')?.textContent?.trim();
+            if (name) showTip(name);
+          }, 2000);
+        });
+        card.addEventListener('mouseleave', () => {
+          clearTimeout(tipTimer);
+          hideTip();
+        });
+      });
+
+      // Exit-intent (desktop only)
+      if (window.matchMedia('(min-width: 769px)').matches) {
+        document.addEventListener('mouseleave', (e) => {
+          if (e.clientY <= 10 && !exitIntentShown && !chatOpen) {
+            exitIntentShown = true;
+            openChat();
+            setTimeout(() => {
+              addMessage('assistant', "Before you go — can I help you find a property that fits your budget? It only takes 30 seconds.");
+              conversationHistory.push({
+                role: 'assistant',
+                content: "Before you go — can I help you find a property that fits your budget? It only takes 30 seconds."
+              });
+            }, 350);
+          }
+        });
+      }
+
+      // Scroll trigger — pulse bubble once after 60% scroll
+      window.addEventListener('scroll', () => {
+        if (scrollPulseShown || chatOpen) return;
+        const pct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+        if (pct > 0.6) {
+          scrollPulseShown = true;
+          bubble.classList.add('attention');
+          setTimeout(() => bubble.classList.remove('attention'), 2400);
+        }
+      }, { passive: true });
+    });
+
+    /* — Contact form (client-side only; wire to backend to send emails) — */
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // TODO: Replace with your form backend (e.g. Formspree, EmailJS, or your own API)
+      // Example with Formspree:
+      //   const data = new FormData(e.target);
+      //   fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body:data });
+      document.getElementById('formMsg').style.display = 'block';
+      e.target.reset();
+    });
+  </script>
+
+</body>
+</html>
