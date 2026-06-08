@@ -81,8 +81,19 @@ export default async (req) => {
     return jsonResponse(405, { error: "Method not allowed. Use POST." });
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const apiKey = (process.env.ANTHROPIC_API_KEY || "").trim();
+  if (!apiKey) {
     return jsonResponse(500, { error: "Server is missing ANTHROPIC_API_KEY." });
+  }
+  // API keys must be ASCII — a stray non-Latin1 character (e.g. a Cyrillic
+  // look-alike pasted from a screenshot) can't go in an HTTP header and would
+  // otherwise throw an opaque "ByteString" error. Catch it with a clear message.
+  if (!/^[\x20-\x7E]+$/.test(apiKey)) {
+    return jsonResponse(500, {
+      error:
+        "ANTHROPIC_API_KEY contains invalid characters. Re-copy it from the " +
+        "Anthropic console and paste it fresh into the Netlify env var.",
+    });
   }
 
   // Parse and validate the request body
@@ -114,7 +125,7 @@ export default async (req) => {
 
   messages.push({ role: "user", content: message });
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const client = new Anthropic({ apiKey });
 
   // Stream the model's reply back to the browser as Server-Sent Events.
   const encoder = new TextEncoder();
