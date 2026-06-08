@@ -2589,28 +2589,28 @@
       </div>
 
       <!-- Contact Form -->
-      <form class="contact-form fade-in fade-in-delay-1" id="contactForm">
+      <form class="contact-form fade-in fade-in-delay-1" id="contactForm" action="https://formspree.io/f/mnjypaka" method="POST">
         <div class="form-row">
           <div class="form-field">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" placeholder="Jane" />
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" />
           </div>
           <div class="form-field">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" placeholder="Doe" />
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" />
           </div>
         </div>
         <div class="form-field">
           <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="jane@example.com" />
+          <input type="email" id="email" name="email" placeholder="jane@example.com" />
         </div>
         <div class="form-field">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" placeholder="(519) 000-0000" />
+          <input type="tel" id="phone" name="phone" placeholder="(519) 000-0000" />
         </div>
         <div class="form-field">
           <label for="interest">I'm Interested In</label>
-          <select id="interest">
+          <select id="interest" name="interest">
             <option value="">Select a property…</option>
             <option>653 Bridge Avenue</option>
             <option>709 Bridge Avenue</option>
@@ -2621,13 +2621,16 @@
         </div>
         <div class="form-field">
           <label for="message">Message</label>
-          <textarea id="message" placeholder="Tell us about what you're looking for…"></textarea>
+          <textarea id="message" name="message" placeholder="Tell us about what you're looking for…"></textarea>
         </div>
         <button type="submit" class="btn btn-solid" style="width:100%; justify-content:center;">
           Send Inquiry <span class="arrow">→</span>
         </button>
         <p id="formMsg" style="font-size:0.75rem; color:var(--color-accent); display:none; text-align:center;">
           ✓ Thank you! We'll be in touch shortly.
+        </p>
+        <p id="formErr" style="font-size:0.75rem; color:#c0392b; display:none; text-align:center;">
+          Something went wrong. Please try again or email us directly.
         </p>
       </form>
 
@@ -3666,15 +3669,29 @@ RULES:
       }, { passive: true });
     });
 
-    /* — Contact form (client-side only; wire to backend to send emails) — */
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
+    /* — Contact form (submits to Formspree) — */
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      // TODO: Replace with your form backend (e.g. Formspree, EmailJS, or your own API)
-      // Example with Formspree:
-      //   const data = new FormData(e.target);
-      //   fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body:data });
-      document.getElementById('formMsg').style.display = 'block';
-      e.target.reset();
+      const form = e.target;
+      const successMsg = document.getElementById('formMsg');
+      const errorMsg = document.getElementById('formErr');
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          successMsg.style.display = 'block';
+          form.reset();
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      } catch (err) {
+        errorMsg.style.display = 'block';
+      }
     });
   </script>
 
