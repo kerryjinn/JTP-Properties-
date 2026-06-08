@@ -1,0 +1,8 @@
+# OS junk
+.DS_Store
+
+# Node / Netlify
+node_modules/
+
+# Local notes / screenshots that should never be published
+API key anthrophic website/

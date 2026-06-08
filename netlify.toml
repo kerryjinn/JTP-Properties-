@@ -1,0 +1,10 @@
+# Netlify configuration
+#
+# Static site is served from the repo root; serverless functions live in
+# netlify/functions. The ANTHROPIC_API_KEY environment variable is configured
+# in the Netlify dashboard (Site settings → Environment variables), not here —
+# never commit the key to the repo.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"

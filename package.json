@@ -1,0 +1,10 @@
+{
+  "name": "windsor-house-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "JIN Properties / Windsor House static site with a Netlify chat function.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.102.0"
+  }
+}

@@ -3292,53 +3292,13 @@
 
     /* ============================================================
        AI PROPERTY CONCIERGE — "Windsor"
-       Direct browser-to-Anthropic call. The API key lives in
-       localStorage on the visitor's browser only because there's
-       no backend yet. PRODUCTION TODO: replace fetch URL below
-       with a tiny proxy on your own server (Cloudflare Worker,
-       Vercel function, etc.) that holds the key server-side.
+       Talks to the Netlify serverless function at
+       /.netlify/functions/chat, which holds the Anthropic API key
+       server-side (ANTHROPIC_API_KEY env var) and proxies the call.
+       The system prompt and model now live in that function.
        ============================================================ */
     document.addEventListener('DOMContentLoaded', () => {
-      const SYSTEM_PROMPT = `You are Windsor, the AI property concierge for JIN Properties — a luxury student rental portfolio in Windsor, Ontario, Canada. You help prospective student tenants find the right unit across our three houses.
-
-JIN PROPERTIES PORTFOLIO (all furnished, walking distance to the University of Windsor):
-
-653 Bridge Avenue — 2 units, 9 bedrooms total, 9 bathrooms total
-  • Upper Unit: 5 bedrooms, 5 bathrooms, 1 kitchen, 1 living-dining room
-  • Lower Unit: 4 bedrooms, 4 bathrooms, 1 kitchen, 1 living-dining room, 1 laundry
-
-709 Bridge Avenue — 5 units, 16 bedrooms total, 16 bathrooms total
-  • Front 2nd Floor Unit: 3 large bedrooms, 3 bathrooms, kitchen, living-dining room, laundry
-  • Front Ground Floor Unit: 3 large bedrooms, 3 bathrooms, kitchen, living-dining room
-  • Front Semi-Ground Unit: 3 bedrooms, 3 bathrooms, kitchen, living-dining room, laundry
-  • Rear Upper Unit: 5 bedrooms, 5 bathrooms, kitchen, living-dining room, laundry
-  • Rear Lower Unit: 2 bedrooms, 2 bathrooms, kitchen, laundry
-
-721 Partington Avenue — 2 units, 8 bedrooms total, 8 bathrooms total
-  • Upper Unit: 4 bedrooms, 4 bathrooms, kitchen, living-dining room, laundry
-  • Lower Unit: 4 bedrooms, 4 bathrooms, kitchen, living-dining room, laundry
-
-PRICING:
-Rooms are priced in three tiers — Large, Medium, Small — per house. Specific rates are not yet published. When asked, say: "Pricing is being confirmed for each room tier — for the most up-to-date rates I'd recommend reaching out directly. I can connect you to the team right now."
-
-NEIGHBOURHOOD:
-Bridge Avenue and Partington Avenue are in Windsor's University District — quiet, walkable streets within easy walking distance of the University of Windsor campus, transit, and shops.
-
-CONTACT:
-Email: rickyjin88@gmail.com  |  Windsor, Ontario, Canada
-Visitors can also book a viewing by filling out the form in the #contact section of this page.
-
-RULES:
-- Only answer questions about JIN Properties, the three houses, leasing, room sizes, availability, amenities, the booking process, and Windsor / University of Windsor general living info.
-- If a question is unrelated, politely redirect: "I'm here to help you find your ideal student rental at JIN Properties — is there anything I can help you with on that front?"
-- Never invent specific pricing or lease terms. Defer to the team for confirmation.
-- Always offer a clear next step (book a viewing, contact the team, explore a specific house).
-- Keep responses concise — 2 to 4 sentences max unless a comparison is requested.
-- Warm, professional, first-person tone.
-- When the user seems ready to commit, proactively offer to help them book a viewing.`;
-
-      const MODEL = 'claude-opus-4-7';
-      const API_KEY_STORAGE = 'JIN_ANTHROPIC_API_KEY';
+      const CHAT_ENDPOINT = '/.netlify/functions/chat';
       const HISTORY_MAX = 20;
       const conversationHistory = [];
       let chatOpen = false;
@@ -3438,22 +3398,6 @@ RULES:
         }
       }
 
-      function getApiKey() {
-        let key = localStorage.getItem(API_KEY_STORAGE);
-        if (!key) {
-          key = window.prompt(
-            'Enter your Anthropic API key to enable the AI concierge.\n\n' +
-            'WARNING: this stores the key in this browser only. Anyone using this device or viewing the page source while testing locally could see it. Use a backend proxy before going live.'
-          );
-          if (key && key.trim().startsWith('sk-')) {
-            localStorage.setItem(API_KEY_STORAGE, key.trim());
-            return key.trim();
-          }
-          return null;
-        }
-        return key;
-      }
-
       // Open / close -------------------------------------------------------
       function openChat() {
         if (chatOpen) return;
@@ -3520,30 +3464,15 @@ RULES:
         conversationHistory.push({ role: 'user', content: text });
 
         const typing = addTyping();
-        const apiKey = getApiKey();
-        if (!apiKey) {
-          typing.remove();
-          addMessage('assistant', "I need an API key to answer that — please refresh and provide one when prompted, or contact the team directly at rickyjin88@gmail.com.");
-          return;
-        }
 
         try {
-          const trimmed = conversationHistory.slice(-HISTORY_MAX);
-          const res = await fetch('https://api.anthropic.com/v1/messages', {
+          // Send prior turns as history; the latest user turn (already pushed
+          // onto conversationHistory above) goes in `message`.
+          const history = conversationHistory.slice(0, -1).slice(-HISTORY_MAX);
+          const res = await fetch(CHAT_ENDPOINT, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'anthropic-version': '2023-06-01',
-              'anthropic-dangerous-direct-browser-access': 'true',
-              'x-api-key': apiKey
-            },
-            body: JSON.stringify({
-              model: MODEL,
-              max_tokens: 400,
-              stream: true,
-              system: SYSTEM_PROMPT,
-              messages: trimmed
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text, history })
           });
 
           if (!res.ok) {
@@ -3553,8 +3482,6 @@ RULES:
               addMessage('assistant', "I'm getting a lot of questions right now — give me just a moment and try again.");
             } else if (status >= 500) {
               addMessage('assistant', "Something went wrong on my end. For immediate help, email us at rickyjin88@gmail.com.");
-            } else if (status === 401 || status === 403) {
-              addMessage('assistant', "Your API key didn't work. You can reset it from the browser console: localStorage.removeItem('JIN_ANTHROPIC_API_KEY')");
             } else {
               addMessage('assistant', "I didn't quite catch that — could you rephrase your question?");
             }
